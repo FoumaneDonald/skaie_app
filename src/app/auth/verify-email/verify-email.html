@@ -1,1 +1,49 @@
-<p>verify-email works!</p>
+<div class="auth-page">
+    <div class="auth-card auth-card--wide">
+        <div class="auth-brand">
+            <span class="brand-mark">SK</span>
+            <span class="brand-name">Skaie</span>
+        </div>
+
+        <div class="auth-header">
+            <h1>Check your inbox</h1>
+            <p>We sent a 6-digit code to<br><strong>{{ userEmail() }}</strong></p>
+        </div>
+
+        @if (errorMessage()) {
+        <div class="alert alert--error">{{ errorMessage() }}</div>
+        }
+
+        @if (successMessage()) {
+        <div class="alert alert--success">{{ successMessage() }}</div>
+        }
+
+        <div class="otp-row" (paste)="onPaste($event)">
+            @for (digit of digits(); track $index) {
+            <input #otpInput type="text" inputmode="numeric" maxlength="1" class="otp-box"
+                [class.otp-box--filled]="digit !== ''" [class.otp-box--error]="errorMessage()" [value]="digit"
+                (input)="onDigitInput($index, $event)" (keydown)="onKeyDown($index, $event)" />
+            }
+        </div>
+
+        <button class="btn btn--primary" [disabled]="isLoading() || digits().join('').length !== 6" (click)="submit()">
+            @if (isLoading()) {
+            <span class="spinner"></span> Verifying...
+            } @else {
+            Verify email
+            }
+        </button>
+
+        <div class="resend-row">
+            @if (resendCooldown() > 0) {
+            <span class="resend-timer">Resend in {{ resendCooldown() }}s</span>
+            } @else {
+            <span>Didn't receive it?</span>
+            <button type="button" class="btn-link" [disabled]="isResending()" (click)="resend()">
+                {{ isResending() ? 'Sending...' : 'Resend code' }}
+            </button>
+            }
+        </div>
+
+    </div>
+</div>

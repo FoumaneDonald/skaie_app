@@ -29,13 +29,12 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
               "budgets": [
+                { "type": "anyComponentStyle", "maximumWarning": "8kb" },
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",

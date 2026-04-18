@@ -1,0 +1,59 @@
+<div class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-sub">Welcome back{{ user() ? ', ' + user()!.name : '' }}</p>
+        </div>
+    </div>
+
+    @if (user()) {
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Role</span>
+            <span class="stat-value">
+                <span class="role-badge role-badge--{{ user()!.role }}">{{ user()!.role }}</span>
+            </span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Email</span>
+            <span class="stat-value stat-value--sm">{{ user()!.email }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Verification</span>
+            <span class="stat-value" [class.stat-value--ok]="user()!.email_verified_at">
+                {{ user()!.email_verified_at ? '✓ Verified' : '✗ Unverified' }}
+            </span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Phone</span>
+            <span class="stat-value stat-value--sm">{{ user()!.phone ?? 'Not set' }}</span>
+        </div>
+    </div>
+
+    <div class="quick-links">
+        <h2 class="section-title">Quick actions</h2>
+        <div class="link-grid">
+            <a routerLink="/profile" class="link-card">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Edit profile</span>
+            </a>
+            <a routerLink="/addresses" class="link-card">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span>Manage addresses</span>
+            </a>
+        </div>
+    </div>
+    } @else {
+    <div class="skeleton-group">
+        <div class="skeleton skeleton--card"></div>
+    </div>
+    }
+</div>

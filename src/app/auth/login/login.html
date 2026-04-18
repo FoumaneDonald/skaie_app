@@ -1,1 +1,56 @@
-<p>login works!</p>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <span class="brand-mark">SK</span>
+            <span class="brand-name">Skaie</span>
+        </div>
+
+        <div class="auth-header">
+            <h1>Welcome back</h1>
+            <p>Sign in to your account</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+            @if (errorMessage()) {
+            <div class="alert alert--error">{{ errorMessage() }}</div>
+            }
+
+            <div class="field" [class.field--error]="getError('email')">
+                <label for="email">Email address</label>
+                <input id="email" type="email" formControlName="email" placeholder="you@example.com"
+                    autocomplete="email" />
+                @if (getError('email')) {
+                <span class="field__error">{{ getError('email') }}</span>
+                }
+            </div>
+
+            <div class="field" [class.field--error]="getError('password')">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                        placeholder="••••••••" autocomplete="current-password" />
+                    <button type="button" class="toggle-pw" (click)="showPassword.set(!showPassword())">
+                        {{ showPassword() ? 'Hide' : 'Show' }}
+                    </button>
+                </div>
+                @if (getError('password')) {
+                <span class="field__error">{{ getError('password') }}</span>
+                }
+            </div>
+
+            <button type="submit" class="btn btn--primary" [disabled]="isLoading()">
+                @if (isLoading()) {
+                <span class="spinner"></span> Signing in...
+                } @else {
+                Sign in
+                }
+            </button>
+
+        </form>
+
+        <p class="auth-footer">
+            Don't have an account? <a routerLink="/auth/register">Create one</a>
+        </p>
+    </div>
+</div>
