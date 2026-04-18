@@ -1,40 +1,57 @@
-<div class="admin-container">
-    
-    <header class="header-actions">
-        <h2>Gestion du Stock</h2>
-        <button class="btn-add-main">+ Nouveau Produit</button>
-    </header>
+<div class="dashboard-wrapper">
+  <nav class="navbar">
+    <div class="logo">Stock<span>Master</span></div>
+    <div class="client-actions">
+      <button class="cart-btn">🛒 Mon Panier</button>
+    </div>
+  </nav>
 
-    <div class="product-grid">
-        @for (product of products; track product.id) {
-            <article class="product-card">
-                
-                <div class="card-content">
-                    <span class="badge-category">{{ product.category || 'Non classé' }}</span>
-                    <h3>{{ product.name }}</h3>
-                    <p class="desc">{{ product.description }}</p>
-                </div>
-
-                <div class="card-footer">
-                    <div class="price-tag">{{ product.price }} €</div>
-                    <div class="stock-info" [class.low]="product.stock < 10">
-                        Stock: {{ product.stock }}
-                    </div>
-                </div>
-
-                <div class="card-actions">
-                    <button class="btn-edit">Modifier</button>
-                    <button class="btn-delete" (click)="onDelete(product.id!)">
-                        Supprimer
-                    </button>
-                </div>
-
-            </article>
-        } @empty {
-            <div class="empty-state">
-                <p>Aucun produit n'est disponible dans la base de données.</p>
-            </div>
-        }
+  <main class="content">
+    <div class="project-header">
+      <div>
+        <h2 class="section-title">Catalogue Produits</h2>
+        <p class="project-id">{{ filteredProducts.length }} produits disponibles</p>
+      </div>
+      
+      <div class="header-actions">
+        <div class="search-bar">
+          <input type="text" 
+                 [(ngModel)]="recherche" 
+                 (input)="filtrer()" 
+                 placeholder="Rechercher un produit...">
+        </div>
+        
+        <select class="category-filter" [(ngModel)]="categorieSelectionnee" (change)="filtrer()">
+          <option value="">Toutes les catégories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
     </div>
 
+    <div class="products-grid">
+      <div *ngFor="let p of filteredProducts" class="product-card">
+        <div class="card-image">
+          <img [src]="p.image || 'assets/placeholder.png'" alt="Produit">
+          <span class="badge-stock" [class.low]="p.stock < 5">
+            {{ p.stock > 0 ? p.stock + ' en stock' : 'Rupture' }}
+          </span>
+        </div>
+        
+        <div class="card-body">
+          <div class="card-category">{{ p.category }}</div>
+          <h3 class="card-title">{{ p.name }}</h3>
+          <p class="card-text">{{ p.description }}</p>
+          
+          <div class="card-footer">
+            <span class="price">{{ p.price }} €</span>
+            <button class="btn-add" [disabled]="p.stock <= 0">Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredProducts.length === 0">
+        <p>Désolé, aucun produit ne correspond à votre recherche.</p>
+      </div>
+    </div>
+  </main>
 </div>
