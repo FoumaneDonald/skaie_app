@@ -1,48 +1,81 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { Token } from '../services/token';
 import { inject } from '@angular/core';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from 'rxjs';
 import { Auth } from '../services/auth';
+import { Router } from '@angular/router';
+import { AuthStateService } from '../services/auth.state';
+
+let isRefreshing = false;
+const refreshSubject = new BehaviorSubject<string | null>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenService = inject(Token);
   const authService = inject(Auth);
+  const authState = inject(AuthStateService);
+  const router = inject(Router);
 
-  const token = tokenService.getAccess();
+  const token = authState.accessToken;
+  const authReq = token ? addToken(req, token) : req;
 
-  if (token) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  }
-
-  return next(req).pipe(
-    catchError((error) => {
-      // 🔁 Token expired → refresh
-      if (error.status === 401) {
-        return authService.refreshToken().pipe(
-          switchMap((res) => {
-            const newToken = res.access_token;
-
-            const clonedReq = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${newToken}`,
-              },
-            });
-
-            return next(clonedReq);
-          }),
-        );
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      // Token expired — attempt silent refresh
+      if (error.status === 401 && !req.url.includes('/auth/refresh')) {
+        return handle401(req, next, authState, authService, router);
       }
 
-      // 🚫 Email not verified
+      // Email not verified — redirect to verify screen
       if (error.status === 403 && error.error?.action === 'verify_email') {
-        window.location.href = '/verify-email';
+        router.navigate(['/auth/verify-email']);
+        return throwError(() => error);
       }
 
       return throwError(() => error);
     }),
   );
 };
+
+function addToken(req: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
+  return req.clone({
+    setHeaders: { Authorization: `Bearer ${token}` },
+  });
+}
+
+function handle401(
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+  authState: AuthStateService,
+  authService: Auth,
+  router: Router,
+) {
+  if (!isRefreshing) {
+    isRefreshing = true;
+    refreshSubject.next(null);
+
+    return authService.refresh().pipe(
+      switchMap((res) => {
+        isRefreshing = false;
+        refreshSubject.next(res.access_token);
+        return next(addToken(req, res.access_token));
+      }),
+      catchError((err) => {
+        isRefreshing = false;
+        authState.clearAuth();
+        router.navigate(['/auth/login']);
+        return throwError(() => err);
+      }),
+    );
+  }
+
+  // Queue other requests while refreshing
+  return refreshSubject.pipe(
+    filter((token) => token !== null),
+    take(1),
+    switchMap((token) => next(addToken(req, token!))),
+  );
+}

@@ -1,1 +1,75 @@
-<p>register works!</p>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <span class="brand-mark">SK</span>
+            <span class="brand-name">Skaie</span>
+        </div>
+
+        <div class="auth-header">
+            <h1>Create account</h1>
+            <p>Start shopping with Skaie</p>
+        </div>
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+
+            @if (errorMessage()) {
+            <div class="alert alert--error">{{ errorMessage() }}</div>
+            }
+
+            <div class="field" [class.field--error]="getError('name')">
+                <label for="name">Full name</label>
+                <input id="name" type="text" formControlName="name" placeholder="John Doe" autocomplete="name" />
+                @if (getError('name')) {
+                <span class="field__error">{{ getError('name') }}</span>
+                }
+            </div>
+
+            <div class="field" [class.field--error]="getError('email')">
+                <label for="email">Email address</label>
+                <input id="email" type="email" formControlName="email" placeholder="you@example.com"
+                    autocomplete="email" />
+                @if (getError('email')) {
+                <span class="field__error">{{ getError('email') }}</span>
+                }
+            </div>
+
+            <div class="field" [class.field--error]="getError('password')">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                        placeholder="Min. 8 characters" autocomplete="new-password" />
+                    <button type="button" class="toggle-pw" (click)="showPassword.set(!showPassword())">
+                        {{ showPassword() ? 'Hide' : 'Show' }}
+                    </button>
+                </div>
+                @if (getError('password')) {
+                <span class="field__error">{{ getError('password') }}</span>
+                }
+            </div>
+
+            <div class="field" [class.field--error]="getError('password_confirmation') || passwordMismatch">
+                <label for="password_confirmation">Confirm password</label>
+                <input id="password_confirmation" [type]="showPassword() ? 'text' : 'password'"
+                    formControlName="password_confirmation" placeholder="Repeat password" autocomplete="new-password" />
+                @if (passwordMismatch) {
+                <span class="field__error">Passwords do not match.</span>
+                } @else if (getError('password_confirmation')) {
+                <span class="field__error">{{ getError('password_confirmation') }}</span>
+                }
+            </div>
+
+            <button type="submit" class="btn btn--primary" [disabled]="isLoading()">
+                @if (isLoading()) {
+                <span class="spinner"></span> Creating account...
+                } @else {
+                Create account
+                }
+            </button>
+
+        </form>
+
+        <p class="auth-footer">
+            Already have an account? <a routerLink="/auth/login">Sign in</a>
+        </p>
+    </div>
+</div>
