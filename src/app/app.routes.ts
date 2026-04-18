@@ -4,24 +4,27 @@ import { guestGuard, verifiedGuard, roleGuard } from './core/guards/auth-guard';
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
 
-  // ── Auth (guest only) ───────────────────────────────────────
+  // ── Auth (guest only ou en cours de vérification) ───────────
   {
     path: 'auth',
-    canActivate: [guestGuard],
     children: [
       {
         path: 'login',
+        canActivate: [guestGuard],
         loadComponent: () => import('./auth/login/login').then((m) => m.Login),
       },
       {
         path: 'register',
+        canActivate: [guestGuard],
         loadComponent: () => import('./auth/register/register').then((m) => m.Register),
       },
+      {
+        path: 'verify-email',
+        // On ne met pas de guestGuard ici car l'utilisateur vient d'être créé 
+        // et peut être techniquement "loggé" mais non vérifié
+        loadComponent: () => import('./auth/verify-email/verify-email').then((m) => m.VerifyEmail),
+      },
     ],
-  },
-  {
-    path: 'auth/verify-email',
-    loadComponent: () => import('./auth/verify-email/verify-email').then((m) => m.VerifyEmail),
   },
 
   // ── App layout (authenticated + verified) ───────────────────
