@@ -1,56 +1,82 @@
-<div class="auth-page">
-    <div class="auth-card">
-        <div class="auth-brand">
-            <span class="brand-mark">SK</span>
-            <span class="brand-name">Skaie</span>
-        </div>
+<div class="auth-wrapper min-vh-100 d-flex flex-column align-items-center justify-content-center p-3 position-relative">
 
-        <div class="auth-header">
-            <h1>Welcome back</h1>
-            <p>Sign in to your account</p>
-        </div>
+    <!-- Language Switcher (Floating) -->
+    <div class="position-absolute top-0 end-0 p-3">
+        <app-language-switcher />
+    </div>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="card bg-dark border-secondary shadow-lg auth-card">
+        <div class="card-body p-4 p-md-5">
 
-            @if (errorMessage()) {
-            <div class="alert alert--error">{{ errorMessage() }}</div>
-            }
-
-            <div class="field" [class.field--error]="getError('email')">
-                <label for="email">Email address</label>
-                <input id="email" type="email" formControlName="email" placeholder="you@example.com"
-                    autocomplete="email" />
-                @if (getError('email')) {
-                <span class="field__error">{{ getError('email') }}</span>
-                }
+            <!-- Brand -->
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <div class="bg-primary rounded px-2 py-1 fw-bold text-white">SK</div>
+                <span class="fs-5 fw-bold text-white tracking-tight">{{ 'brand' | translate }}</span>
             </div>
 
-            <div class="field" [class.field--error]="getError('password')">
-                <label for="password">Password</label>
-                <div class="input-wrap">
-                    <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
-                        placeholder="••••••••" autocomplete="current-password" />
-                    <button type="button" class="toggle-pw" (click)="showPassword.set(!showPassword())">
-                        {{ showPassword() ? 'Hide' : 'Show' }}
-                    </button>
+            <!-- Header -->
+            <div class="mb-4">
+                <h1 class="h4 fw-bold text-white mb-1">{{ 'auth.login.title' | translate }}</h1>
+                <p class="text-muted small">{{ 'auth.login.subtitle' | translate }}</p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+                @if (errorMessage()) {
+                <div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger small mb-4">
+                    {{ errorMessage() }}
                 </div>
-                @if (getError('password')) {
-                <span class="field__error">{{ getError('password') }}</span>
                 }
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label text-muted small text-uppercase fw-bold">{{ 'auth.login.email'
+                        | translate }}</label>
+                    <input id="email" type="email" formControlName="email" class="form-control"
+                        [class.is-invalid]="getError('email')"
+                        [placeholder]="'auth.login.email_placeholder' | translate" autocomplete="email" />
+                    @if (getError('email')) {
+                    <div class="invalid-feedback">{{ getError('email') }}</div>
+                    }
+                </div>
+
+                <!-- Password -->
+                <div class="mb-4">
+                    <label for="password" class="form-label text-muted small text-uppercase fw-bold">{{
+                        'auth.login.password' | translate }}</label>
+                    <div class="input-group">
+                        <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                            class="form-control" [class.is-invalid]="getError('password')"
+                            [placeholder]="'auth.login.password_placeholder' | translate"
+                            autocomplete="current-password" />
+                        <button class="btn btn-outline-secondary border-secondary" type="button"
+                            (click)="showPassword.set(!showPassword())">
+                            <span class="small text-uppercase">{{ (showPassword() ? 'auth.login.hide' :
+                                'auth.login.show') | translate }}</span>
+                        </button>
+                        @if (getError('password')) {
+                        <div class="invalid-feedback">{{ getError('password') }}</div>
+                        }
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold mb-3" [disabled]="isLoading()">
+                    @if (isLoading()) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>{{ 'auth.login.submitting' | translate }}
+                    } @else {
+                    {{ 'auth.login.submit' | translate }}
+                    }
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-0">
+                    {{ 'auth.login.no_account' | translate }}
+                    <a routerLink="/auth/register" class="text-primary text-decoration-none fw-bold ms-1">{{
+                        'auth.login.register_link' | translate }}</a>
+                </p>
             </div>
 
-            <button type="submit" class="btn btn--primary" [disabled]="isLoading()">
-                @if (isLoading()) {
-                <span class="spinner"></span> Signing in...
-                } @else {
-                Sign in
-                }
-            </button>
-
-        </form>
-
-        <p class="auth-footer">
-            Don't have an account? <a routerLink="/auth/register">Create one</a>
-        </p>
+        </div>
     </div>
 </div>

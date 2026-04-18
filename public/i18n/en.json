@@ -1,0 +1,147 @@
+{
+  "brand": "Skaie",
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "addresses": "Addresses"
+  },
+
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "email": "Email address",
+      "email_placeholder": "you@example.com",
+      "password": "Password",
+      "password_placeholder": "••••••••",
+      "show": "Show",
+      "hide": "Hide",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "no_account": "Don't have an account?",
+      "register_link": "Create one"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Start shopping with Skaie",
+      "name": "Full name",
+      "name_placeholder": "John Doe",
+      "email": "Email address",
+      "email_placeholder": "you@example.com",
+      "password": "Password",
+      "password_placeholder": "Min. 8 characters",
+      "confirm_password": "Confirm password",
+      "confirm_placeholder": "Repeat password",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "has_account": "Already have an account?",
+      "login_link": "Sign in"
+    },
+    "verify": {
+      "title": "Check your inbox",
+      "subtitle": "We sent a 6-digit code to",
+      "verify_btn": "Verify email",
+      "verifying": "Verifying...",
+      "didnt_receive": "Didn't receive it?",
+      "resend": "Resend code",
+      "resending": "Sending...",
+      "resend_in": "Resend in {{seconds}}s",
+      "resent_success": "A new OTP has been sent to your email."
+    },
+    "logout": "Sign out",
+    "logging_out": "Signing out..."
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome back, {{name}}",
+    "role": "Role",
+    "email": "Email",
+    "verification": "Verification",
+    "phone": "Phone",
+    "verified": "✓ Verified",
+    "unverified": "✗ Unverified",
+    "not_set": "Not set",
+    "quick_actions": "Quick actions",
+    "edit_profile": "Edit profile",
+    "manage_addresses": "Manage addresses"
+  },
+
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information",
+    "personal_info": "Personal Information",
+    "personal_info_sub": "Update your name, email and contact details",
+    "name": "Full name",
+    "name_placeholder": "John Doe",
+    "email": "Email address",
+    "email_placeholder": "you@example.com",
+    "phone": "Phone number",
+    "phone_placeholder": "+237 6 00 00 00 00",
+    "dob": "Date of birth",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "save_success": "Profile updated successfully.",
+    "change_password": "Change Password",
+    "change_password_sub": "Keep your account secure with a strong password",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "new_password_placeholder": "Min. 8 characters",
+    "confirm_password": "Confirm new password",
+    "confirm_placeholder": "Repeat new password",
+    "update_password": "Update password",
+    "updating": "Updating...",
+    "password_success": "Password changed successfully."
+  },
+
+  "addresses": {
+    "title": "Addresses",
+    "subtitle": "Manage your saved delivery addresses",
+    "add": "Add address",
+    "new_address": "New address",
+    "edit_address": "Edit address",
+    "label": "Label (optional)",
+    "label_placeholder": "e.g. Home, Work",
+    "street_1": "Street address",
+    "street_1_placeholder": "123 Main Street",
+    "street_2": "Apartment, suite, etc. (optional)",
+    "street_2_placeholder": "Apt 4B",
+    "city": "City",
+    "city_placeholder": "Yaoundé",
+    "state": "State / Province",
+    "state_placeholder": "Centre",
+    "zip": "ZIP / Postal code",
+    "zip_placeholder": "00000",
+    "country": "Country",
+    "country_placeholder": "Cameroon",
+    "phone": "Phone number",
+    "phone_placeholder": "+237 6 00 00 00 00",
+    "set_default": "Set as default address",
+    "cancel": "Cancel",
+    "save": "Add address",
+    "update": "Update",
+    "saving": "Saving...",
+    "default_badge": "Default",
+    "set_default_btn": "Set default",
+    "setting_default": "Setting...",
+    "edit_btn": "Edit",
+    "delete_btn": "Delete",
+    "deleting": "Deleting...",
+    "empty": "No addresses saved yet",
+    "add_first": "Add your first address"
+  },
+
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "min_chars": "Minimum {{min}} characters required.",
+    "password_mismatch": "Passwords do not match.",
+    "password_different": "New password must differ from current."
+  },
+
+  "common": {
+    "loading": "Loading...",
+    "error_generic": "Something went wrong. Please try again."
+  }
+}

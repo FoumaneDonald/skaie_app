@@ -12,10 +12,12 @@ import { Router } from '@angular/router';
 import { AuthStateService } from '../../core/services/auth.state';
 import { Auth } from '../../core/services/auth';
 import { CommonModule } from '@angular/common';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-verify-email',
-  imports: [CommonModule],
+  imports: [CommonModule, LanguageSwitcher, TranslateModule],
   templateUrl: './verify-email.html',
   styleUrl: './verify-email.scss',
 })

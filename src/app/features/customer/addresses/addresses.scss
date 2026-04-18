@@ -1,0 +1,51 @@
+@use '../customer.scss';
+.address-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(108, 99, 255, 0.4) !important;
+  }
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.extra-small {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.4em 0.8em;
+}
+
+// Modal Backdrop Overlay Logic
+.modal.show {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  border-radius: 1.25rem;
+}
+
+.form-check-input {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+
+  &:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  }
+}
+
+// Empty state icon animation
+.text-center svg {
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+.text-center:hover svg {
+  opacity: 0.5;
+}

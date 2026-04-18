@@ -1,1 +1,40 @@
 @use '../auth.scss';
+
+.otp-box {
+  // Overriding standard form-control for OTP square look
+  width: 48px;
+  height: 56px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 56px;
+
+  // Ensure 6 boxes fit on small mobile screens
+  @media (max-width: 380px) {
+    width: 38px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+}
+
+// Visual feedback for errors (shake animation)
+.border-danger {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.auth-card {
+  max-width: 460px; // Slightly wider for OTP layout
+}

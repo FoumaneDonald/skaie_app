@@ -1,0 +1,225 @@
+<div class="container-fluid p-0">
+    <!-- Header Section -->
+    <div
+        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 fw-bold text-white mb-1">{{ 'addresses.title' | translate }}</h1>
+            <p class="text-muted mb-0">{{ 'addresses.subtitle' | translate }}</p>
+        </div>
+        <button class="btn btn-primary d-flex align-items-center gap-2 fw-bold px-4" (click)="openAdd()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            {{ 'addresses.add' | translate }}
+        </button>
+    </div>
+
+    <!-- Address Form Modal -->
+    @if (showForm()) {
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-backdrop fade show" (click)="closeForm()"></div>
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content bg-dark border-secondary shadow-lg">
+                <div class="modal-header border-secondary p-4">
+                    <h5 class="modal-title text-white fw-bold">
+                        {{ (editingId() ? 'addresses.edit_address' : 'addresses.new_address') | translate }}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" (click)="closeForm()"
+                        aria-label="Close"></button>
+                </div>
+
+                <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+                    <div class="modal-body p-4">
+                        @if (formError()) {
+                        <div class="alert alert-danger bg-danger bg-opacity-10 border-0 text-danger small mb-4">{{
+                            formError() }}</div>
+                        }
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{ 'addresses.label' |
+                                    translate }}</label>
+                                <input type="text" formControlName="label" class="form-control"
+                                    [placeholder]="'addresses.label_placeholder' | translate" />
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{
+                                    'addresses.street_1' | translate }}</label>
+                                <input type="text" formControlName="street_line_1" class="form-control"
+                                    [class.is-invalid]="getError('street_line_1')"
+                                    [placeholder]="'addresses.street_1_placeholder' | translate" />
+                                @if (getError('street_line_1')) { <div class="invalid-feedback">{{
+                                    getError('street_line_1') }}</div> }
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{
+                                    'addresses.street_2' | translate }}</label>
+                                <input type="text" formControlName="street_line_2" class="form-control"
+                                    [placeholder]="'addresses.street_2_placeholder' | translate" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{ 'addresses.city' |
+                                    translate }}</label>
+                                <input type="text" formControlName="city" class="form-control"
+                                    [class.is-invalid]="getError('city')"
+                                    [placeholder]="'addresses.city_placeholder' | translate" />
+                                @if (getError('city')) { <div class="invalid-feedback">{{ getError('city') }}</div> }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{ 'addresses.state' |
+                                    translate }}</label>
+                                <input type="text" formControlName="state" class="form-control"
+                                    [class.is-invalid]="getError('state')"
+                                    [placeholder]="'addresses.state_placeholder' | translate" />
+                                @if (getError('state')) { <div class="invalid-feedback">{{ getError('state') }}</div> }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{ 'addresses.zip' |
+                                    translate }}</label>
+                                <input type="text" formControlName="zip" class="form-control"
+                                    [class.is-invalid]="getError('zip')"
+                                    [placeholder]="'addresses.zip_placeholder' | translate" />
+                                @if (getError('zip')) { <div class="invalid-feedback">{{ getError('zip') }}</div> }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{ 'addresses.country'
+                                    | translate }}</label>
+                                <input type="text" formControlName="country" class="form-control"
+                                    [class.is-invalid]="getError('country')"
+                                    [placeholder]="'addresses.country_placeholder' | translate" />
+                                @if (getError('country')) { <div class="invalid-feedback">{{ getError('country') }}
+                                </div> }
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-muted small text-uppercase fw-bold">{{ 'addresses.phone' |
+                                    translate }}</label>
+                                <input type="tel" formControlName="phone" class="form-control"
+                                    [class.is-invalid]="getError('phone')"
+                                    [placeholder]="'addresses.phone_placeholder' | translate" />
+                                @if (getError('phone')) { <div class="invalid-feedback">{{ getError('phone') }}</div> }
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <div class="form-check">
+                                    <input type="checkbox" formControlName="is_default" class="form-check-input"
+                                        id="isDefaultCheck" />
+                                    <label class="form-check-label text-secondary small" for="isDefaultCheck">{{
+                                        'addresses.set_default' | translate }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary p-4">
+                        <button type="button" class="btn btn-link text-secondary text-decoration-none fw-bold"
+                            (click)="closeForm()">
+                            {{ 'addresses.cancel' | translate }}
+                        </button>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold" [disabled]="isSaving()">
+                            @if (isSaving()) {
+                            <span class="spinner-border spinner-border-sm me-2"></span>{{ 'addresses.saving' | translate
+                            }}
+                            } @else {
+                            {{ (editingId() ? 'addresses.update' : 'addresses.save') | translate }}
+                            }
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Content Section -->
+    @if (isLoading()) {
+    <div class="row g-3">
+        <div class="col-md-6 col-xl-4" *ngFor="let i of [1,2]">
+            <div class="card bg-dark border-secondary placeholder-glow" style="height: 200px;">
+                <div class="card-body"><span class="placeholder col-7 mb-2"></span><span
+                        class="placeholder col-10"></span></div>
+            </div>
+        </div>
+    </div>
+    } @else if (addresses().length === 0) {
+    <div class="text-center py-5 bg-dark border border-secondary rounded-4">
+        <div class="text-muted mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+            </svg>
+        </div>
+        <p class="text-white mb-4">{{ 'addresses.empty' | translate }}</p>
+        <button class="btn btn-primary px-4 fw-bold" (click)="openAdd()">{{ 'addresses.add_first' | translate
+            }}</button>
+    </div>
+    } @else {
+    <div class="row g-3">
+        @for (address of addresses(); track address.id) {
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="card bg-dark border-secondary h-100 shadow-sm address-card"
+                [class.border-primary]="address.is_default">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h6 class="text-primary small text-uppercase fw-bold tracking-wider mb-0">
+                            {{ address.label || ('addresses.label_placeholder' | translate) }}
+                        </h6>
+                        @if (address.is_default) {
+                        <span class="badge bg-primary-subtle text-primary extra-small text-uppercase">{{
+                            'addresses.default_badge' | translate }}</span>
+                        }
+                    </div>
+
+                    <div class="text-white small mb-1">{{ address.street_line_1 }}</div>
+                    @if (address.street_line_2) { <div class="text-white small mb-1">{{ address.street_line_2 }}</div> }
+                    <div class="text-secondary small mb-1">
+                        {{ address.city }}, {{ address.state }} {{ address.zip }}
+                    </div>
+                    <div class="text-secondary small mb-3">{{ address.country }}</div>
+
+                    <div class="d-flex align-items-center gap-2 text-muted small mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        {{ address.phone }}
+                    </div>
+
+                    <div class="d-flex gap-2 pt-3 border-top border-secondary">
+                        <button class="btn btn-sm btn-outline-secondary border-0 text-white-50"
+                            (click)="openEdit(address)">
+                            {{ 'addresses.edit_btn' | translate }}
+                        </button>
+
+                        @if (!address.is_default) {
+                        <button class="btn btn-sm btn-outline-primary border-0" (click)="setDefault(address)"
+                            [disabled]="isSettingDefault() === address.id">
+                            {{ (isSettingDefault() === address.id ? 'addresses.setting_default' :
+                            'addresses.set_default_btn') | translate }}
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger border-0 ms-auto" (click)="delete(address)"
+                            [disabled]="isDeleting() === address.id">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                            </svg>
+                        </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>

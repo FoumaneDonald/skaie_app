@@ -1,59 +1,101 @@
-<div class="page">
-    <div class="page-header">
-        <div>
-            <h1 class="page-title">Dashboard</h1>
-            <p class="page-sub">Welcome back{{ user() ? ', ' + user()!.name : '' }}</p>
-        </div>
-    </div>
-
-    @if (user()) {
-    <div class="stats-grid">
-        <div class="stat-card">
-            <span class="stat-label">Role</span>
-            <span class="stat-value">
-                <span class="role-badge role-badge--{{ user()!.role }}">{{ user()!.role }}</span>
-            </span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Email</span>
-            <span class="stat-value stat-value--sm">{{ user()!.email }}</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Verification</span>
-            <span class="stat-value" [class.stat-value--ok]="user()!.email_verified_at">
-                {{ user()!.email_verified_at ? '✓ Verified' : '✗ Unverified' }}
-            </span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Phone</span>
-            <span class="stat-value stat-value--sm">{{ user()!.phone ?? 'Not set' }}</span>
-        </div>
-    </div>
-
-    <div class="quick-links">
-        <h2 class="section-title">Quick actions</h2>
-        <div class="link-grid">
-            <a routerLink="/profile" class="link-card">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                </svg>
-                <span>Edit profile</span>
-            </a>
-            <a routerLink="/addresses" class="link-card">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                </svg>
-                <span>Manage addresses</span>
-            </a>
-        </div>
-    </div>
-    } @else {
-    <div class="skeleton-group">
-        <div class="skeleton skeleton--card"></div>
-    </div>
-    }
+<div class="mb-4">
+    <h1 class="h3 fw-bold text-white mb-1">{{ 'dashboard.title' | translate }}</h1>
+    <p class="text-muted">{{ 'dashboard.subtitle' | translate : { name: user()?.name ?? '' } }}</p>
 </div>
+
+@if (user()) {
+<div class="row g-3 mb-5">
+    <!-- Stat Cards -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted small text-uppercase tracking-wider">{{ 'dashboard.role' |
+                    translate }}</h6>
+                <span class="badge" [ngClass]="{
+                    'bg-success-subtle text-success': user()!.role === 'customer',
+                    'bg-warning-subtle text-warning': user()!.role === 'admin',
+                    'bg-primary-subtle text-primary': user()!.role === 'super_admin'
+                }">{{ user()!.role }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted small text-uppercase tracking-wider">{{ 'dashboard.email' |
+                    translate }}</h6>
+                <p class="card-text text-white text-truncate mb-0 small">{{ user()!.email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted small text-uppercase tracking-wider">{{
+                    'dashboard.verification' | translate }}</h6>
+                <div class="d-flex align-items-center gap-2" [class.text-success]="user()!.email_verified_at">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-patch-check" viewBox="0 0 16 16">
+                        <path
+                            d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                    </svg>
+                    <span class="fw-bold small">{{ (user()!.email_verified_at ? 'dashboard.verified' :
+                        'dashboard.unverified') | translate }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted small text-uppercase tracking-wider">{{ 'dashboard.phone' |
+                    translate }}</h6>
+                <p class="card-text text-white mb-0 small">{{ user()!.phone ?? ('dashboard.not_set' | translate) }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="text-white mb-3 fw-bold">{{ 'dashboard.quick_actions' | translate }}</h5>
+<div class="row g-3">
+    <div class="col-12 col-md-4">
+        <a routerLink="/profile" class="card bg-dark border-secondary text-decoration-none action-card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="p-2 bg-primary bg-opacity-10 text-primary rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <span class="text-white fw-medium">{{ 'dashboard.edit_profile' | translate }}</span>
+            </div>
+        </a>
+    </div>
+    <div class="col-12 col-md-4">
+        <a routerLink="/addresses" class="card bg-dark border-secondary text-decoration-none action-card h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="p-2 bg-primary bg-opacity-10 text-primary rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                </div>
+                <span class="text-white fw-medium">{{ 'dashboard.manage_addresses' | translate }}</span>
+            </div>
+        </a>
+    </div>
+</div>
+} @else {
+<div class="row g-3">
+    <div class="col-md-3" *ngFor="let i of [1,2,3,4]">
+        <div class="card bg-dark border-secondary placeholder-glow" style="height: 100px;">
+            <div class="card-body"><span class="placeholder col-6"></span></div>
+        </div>
+    </div>
+</div>
+}

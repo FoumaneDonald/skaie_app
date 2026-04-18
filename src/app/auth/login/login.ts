@@ -4,10 +4,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../core/services/auth';
 import { CommonModule } from '@angular/common';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, LanguageSwitcher, TranslateModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

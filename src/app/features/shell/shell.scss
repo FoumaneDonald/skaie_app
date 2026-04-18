@@ -1,0 +1,39 @@
+#wrapper {
+  overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  width: 260px;
+  transition: margin 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+#page-content-wrapper {
+  flex: 1;
+}
+
+// Active link style
+.list-group-item.active {
+  background-color: var(--bs-primary-bg-subtle) !important;
+  color: var(--bs-primary) !important;
+  border: 0;
+}
+
+.list-group-item:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+}
+
+// Sidebar toggle logic for mobile
+@media (max-width: 991.98px) {
+  #sidebar-wrapper {
+    margin-left: -260px;
+    position: fixed;
+    z-index: 1000;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+  }
+}

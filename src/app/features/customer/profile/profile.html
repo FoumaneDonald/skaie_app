@@ -1,0 +1,180 @@
+<div class="container-fluid p-0">
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="h3 fw-bold text-white mb-1">{{ 'profile.title' | translate }}</h1>
+        <p class="text-muted">{{ 'profile.subtitle' | translate }}</p>
+    </div>
+
+    @if (isLoadingProfile()) {
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary placeholder-glow p-4">
+                <span class="placeholder col-4 mb-3"></span>
+                <span class="placeholder col-12 mb-2"></span>
+                <span class="placeholder col-8"></span>
+            </div>
+        </div>
+    </div>
+    } @else {
+
+    <div class="row g-4">
+        <!-- Profile Info Card -->
+        <div class="col-12 col-xl-8">
+            <div class="card bg-dark border-secondary shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold fs-4"
+                            style="width: 56px; height: 56px; border: 1px solid rgba(108, 99, 255, 0.2);">
+                            {{ user()?.name?.charAt(0)?.toUpperCase() }}
+                        </div>
+                        <div>
+                            <h2 class="h5 text-white mb-1">{{ 'profile.personal_info' | translate }}</h2>
+                            <p class="small text-muted mb-0">{{ 'profile.personal_info_sub' | translate }}</p>
+                        </div>
+                    </div>
+
+                    @if (profileSuccess()) {
+                    <div
+                        class="alert alert-success d-flex align-items-center gap-2 mb-4 py-2 border-0 bg-success bg-opacity-10 text-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg>
+                        <span class="small">{{ profileSuccess() }}</span>
+                    </div>
+                    }
+
+                    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{ 'profile.name' |
+                                translate }}</label>
+                            <input type="text" formControlName="name" class="form-control"
+                                [class.is-invalid]="getProfileError('name')" />
+                            @if (getProfileError('name')) { <div class="invalid-feedback">{{ getProfileError('name') }}
+                            </div> }
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{ 'profile.email' |
+                                translate }}</label>
+                            <input type="email" formControlName="email" class="form-control"
+                                [class.is-invalid]="getProfileError('email')" />
+                            @if (getProfileError('email')) { <div class="invalid-feedback">{{ getProfileError('email')
+                                }}</div> }
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{ 'profile.phone' |
+                                translate }}</label>
+                            <input type="tel" formControlName="phone" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{ 'profile.dob' |
+                                translate }}</label>
+                            <input type="date" formControlName="date_of_birth" class="form-control" />
+                        </div>
+
+                        <div class="col-12 text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4 py-2 fw-bold"
+                                [disabled]="isSavingProfile()">
+                                @if (isSavingProfile()) {
+                                <span class="spinner-border spinner-border-sm me-2"></span>{{ 'profile.saving' |
+                                translate }}
+                                } @else {
+                                {{ 'profile.save' | translate }}
+                                }
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Card -->
+        <div class="col-12 col-xl-4">
+            <div class="card bg-dark border-secondary shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="bg-secondary bg-opacity-20 text-secondary rounded p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="h6 text-white mb-1">{{ 'profile.change_password' | translate }}</h2>
+                            <p class="extra-small text-muted mb-0">{{ 'profile.change_password_sub' | translate }}</p>
+                        </div>
+                    </div>
+
+                    @if (passwordSuccess()) {
+                    <div class="alert alert-success py-2 border-0 bg-success bg-opacity-10 text-success small mb-3">{{
+                        passwordSuccess() }}</div>
+                    }
+
+                    <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{
+                                'profile.current_password' | translate }}</label>
+                            <div class="input-group">
+                                <input [type]="showCurrentPw() ? 'text' : 'password'" formControlName="current_password"
+                                    class="form-control" placeholder="••••••••"
+                                    [class.is-invalid]="getPasswordError('current_password')" />
+                                <button class="btn btn-outline-secondary border-secondary" type="button"
+                                    (click)="showCurrentPw.set(!showCurrentPw())">
+                                    <span class="small text-uppercase">{{ (showCurrentPw() ? 'auth.login.hide' :
+                                        'auth.login.show') | translate }}</span>
+                                </button>
+                                @if (getPasswordError('current_password')) { <div class="invalid-feedback">{{
+                                    getPasswordError('current_password') }}</div> }
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{ 'profile.new_password'
+                                | translate }}</label>
+                            <div class="input-group">
+                                <input [type]="showNewPw() ? 'text' : 'password'" formControlName="password"
+                                    class="form-control" placeholder="••••••••"
+                                    [class.is-invalid]="getPasswordError('password')" />
+                                <button class="btn btn-outline-secondary border-secondary" type="button"
+                                    (click)="showNewPw.set(!showNewPw())">
+                                    <span class="small text-uppercase">{{ (showNewPw() ? 'auth.login.hide' :
+                                        'auth.login.show') | translate }}</span>
+                                </button>
+                                @if (getPasswordError('password')) { <div class="invalid-feedback">{{
+                                    getPasswordError('password') }}</div> }
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-muted small text-uppercase fw-bold">{{
+                                'profile.confirm_password' | translate }}</label>
+                            <input [type]="showNewPw() ? 'text' : 'password'" formControlName="password_confirmation"
+                                class="form-control" placeholder="••••••••"
+                                [class.is-invalid]="getPasswordError('password_confirmation')" />
+                            @if (getPasswordError('password_confirmation')) { <div class="invalid-feedback">{{
+                                getPasswordError('password_confirmation') }}</div> }
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-outline-primary w-100 fw-bold"
+                                [disabled]="isSavingPassword()">
+                                @if (isSavingPassword()) {
+                                <span class="spinner-border spinner-border-sm me-2"></span>{{ 'profile.updating' |
+                                translate }}
+                                } @else {
+                                {{ 'profile.update_password' | translate }}
+                                }
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

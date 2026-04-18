@@ -10,6 +10,8 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../core/services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { TranslateModule } from '@ngx-translate/core';
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
@@ -19,7 +21,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, LanguageSwitcher, TranslateModule],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })

@@ -1,49 +1,75 @@
-<div class="auth-page">
-    <div class="auth-card auth-card--wide">
-        <div class="auth-brand">
-            <span class="brand-mark">SK</span>
-            <span class="brand-name">Skaie</span>
-        </div>
+<div class="auth-wrapper min-vh-100 d-flex flex-column align-items-center justify-content-center p-3 position-relative">
 
-        <div class="auth-header">
-            <h1>Check your inbox</h1>
-            <p>We sent a 6-digit code to<br><strong>{{ userEmail() }}</strong></p>
-        </div>
+    <!-- Language Switcher (Floating) -->
+    <div class="position-absolute top-0 end-0 p-3">
+        <app-language-switcher />
+    </div>
 
-        @if (errorMessage()) {
-        <div class="alert alert--error">{{ errorMessage() }}</div>
-        }
+    <div class="card bg-dark border-secondary shadow-lg auth-card">
+        <div class="card-body p-4 p-md-5 text-center">
 
-        @if (successMessage()) {
-        <div class="alert alert--success">{{ successMessage() }}</div>
-        }
+            <!-- Brand -->
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-4">
+                <div class="bg-primary rounded px-2 py-1 fw-bold text-white">SK</div>
+                <span class="fs-5 fw-bold text-white tracking-tight">Skaie</span>
+            </div>
 
-        <div class="otp-row" (paste)="onPaste($event)">
-            @for (digit of digits(); track $index) {
-            <input #otpInput type="text" inputmode="numeric" maxlength="1" class="otp-box"
-                [class.otp-box--filled]="digit !== ''" [class.otp-box--error]="errorMessage()" [value]="digit"
-                (input)="onDigitInput($index, $event)" (keydown)="onKeyDown($index, $event)" />
+            <!-- Header -->
+            <div class="mb-4">
+                <h1 class="h4 fw-bold text-white mb-2">{{ 'auth.verify.title' | translate }}</h1>
+                <p class="text-muted small">
+                    {{ 'auth.verify.subtitle' | translate }}<br>
+                    <strong class="text-white">{{ userEmail() }}</strong>
+                </p>
+            </div>
+
+            @if (errorMessage()) {
+            <div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger small mb-4 text-start">
+                {{ errorMessage() }}
+            </div>
             }
-        </div>
 
-        <button class="btn btn--primary" [disabled]="isLoading() || digits().join('').length !== 6" (click)="submit()">
-            @if (isLoading()) {
-            <span class="spinner"></span> Verifying...
-            } @else {
-            Verify email
+            @if (successMessage()) {
+            <div class="alert alert-success border-0 bg-success bg-opacity-10 text-success small mb-4 text-start">
+                {{ successMessage() }}
+            </div>
             }
-        </button>
 
-        <div class="resend-row">
-            @if (resendCooldown() > 0) {
-            <span class="resend-timer">Resend in {{ resendCooldown() }}s</span>
-            } @else {
-            <span>Didn't receive it?</span>
-            <button type="button" class="btn-link" [disabled]="isResending()" (click)="resend()">
-                {{ isResending() ? 'Sending...' : 'Resend code' }}
+            <!-- OTP Input Row -->
+            <div class="otp-row mb-4 gap-2 d-flex justify-content-center" (paste)="onPaste($event)">
+                @for (digit of digits(); track $index) {
+                <input #otpInput type="text" inputmode="numeric" maxlength="1" class="otp-box form-control p-0"
+                    [class.border-danger]="errorMessage()" [value]="digit" (input)="onDigitInput($index, $event)"
+                    (keydown)="onKeyDown($index, $event)" />
+                }
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 fw-bold mb-4"
+                [disabled]="isLoading() || digits().join('').length !== 6" (click)="submit()">
+                @if (isLoading()) {
+                <span class="spinner-border spinner-border-sm me-2"></span> {{ 'auth.verify.submitting' | translate }}
+                } @else {
+                {{ 'auth.verify.submit' | translate }}
+                }
             </button>
-            }
-        </div>
 
+            <!-- Resend Logic -->
+            <div class="mt-2 py-3 border-top border-secondary">
+                @if (resendCooldown() > 0) {
+                <p class="text-muted small mb-0">
+                    {{ 'auth.verify.resend_cooldown' | translate : { seconds: resendCooldown() } }}
+                </p>
+                } @else {
+                <p class="text-muted small mb-0">
+                    {{ 'auth.verify.no_code' | translate }}
+                    <button type="button" class="btn btn-link text-primary text-decoration-none fw-bold p-0 ms-1 small"
+                        [disabled]="isResending()" (click)="resend()">
+                        {{ (isResending() ? 'auth.verify.sending' : 'auth.verify.resend_link') | translate }}
+                    </button>
+                </p>
+                }
+            </div>
+
+        </div>
     </div>
 </div>

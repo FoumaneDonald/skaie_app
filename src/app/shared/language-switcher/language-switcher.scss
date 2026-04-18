@@ -1,0 +1,37 @@
+.lang-btn {
+  // Semi-transparent background to match the dark theme
+  background-color: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease-in-out;
+  border-width: 1px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--bs-primary) !important; // Glow primary color on hover
+
+    .lang-label {
+      color: #fff !important;
+    }
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.lang-flag-wrapper {
+  font-size: 1.1rem;
+  line-height: 1;
+  // Grayscale by default, full color on hover if you want a subtle effect
+  filter: saturate(0.8);
+  transition: filter 0.2s ease;
+}
+
+.lang-btn:hover .lang-flag-wrapper {
+  filter: saturate(1.2);
+}
+
+.lang-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}

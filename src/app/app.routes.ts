@@ -22,9 +22,31 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/verify-email/verify-email').then((m) => m.VerifyEmail),
   },
 
+  // ── Authenticated shell (sidebar layout) ──────────────────────────────────
   {
-    path: 'dashboard',
+    path: '',
     canActivate: [verifiedGuard],
-    loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+    loadComponent: () => import('./features/shell/shell').then((m) => m.Shell),
+    children: [
+      {
+        path: 'dashboard',
+        canActivate: [verifiedGuard],
+        loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'profile',
+        canActivate: [roleGuard(['customer'])],
+        loadComponent: () => import('./features/customer/profile/profile').then((m) => m.Profile),
+      },
+      {
+        path: 'addresses',
+        canActivate: [roleGuard(['customer'])],
+        loadComponent: () =>
+          import('./features/customer/addresses/addresses').then((m) => m.Addresses),
+      },
+    ],
   },
+
+  // ── Fallback ─────────────────────────────────────────────────────────────
+  { path: '**', redirectTo: '/auth/login' },
 ];

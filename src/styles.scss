@@ -1,32 +1,111 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+// 1. Override Bootstrap Variables
+:root {
+  // Brand Colors
+  --bs-primary: #6c63ff;
+  --bs-primary-rgb: 108, 99, 255;
+  --bs-primary-bg-subtle: rgba(108, 99, 255, 0.15);
+
+  // Backgrounds
+  --bs-body-bg: #0a0a0f;
+  --bs-body-color: #f0f0f5;
+  --bs-secondary-bg: #111118; // Your surface color
+  --bs-tertiary-bg: #1a1a24; // Your surface-2 color
+
+  // Borders
+  --bs-border-color: rgba(255, 255, 255, 0.08);
+  --bs-border-color-translucent: rgba(255, 255, 255, 0.05);
+
+  // Typography
+  --bs-body-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  // Custom radius
+  --bs-border-radius: 12px;
+  --bs-border-radius-sm: 8px;
+  --bs-border-radius-lg: 16px;
 }
 
+// 2. Global Resets
 html,
 body {
   height: 100%;
-  font-family:
-    'Inter',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: #0a0a0f;
-  color: #f0f0f5;
-}
-
-input,
-button,
-textarea,
-select {
-  font-family: inherit;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
   text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+// 3. Custom Utility Classes (Used in our previous refactors)
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.extra-small {
+  font-size: 0.7rem;
+}
+
+// Custom scrollbar for a premium dark look
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bs-body-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bs-tertiary-bg);
+  border-radius: 10px;
+  border: 2px solid var(--bs-body-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-primary);
+}
+
+// 4. Global Button Overrides
+.btn {
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: #7c74ff;
+  --bs-btn-hover-border-color: #7c74ff;
+  box-shadow: 0 4px 14px 0 rgba(108, 99, 255, 0.25);
+}
+
+// 5. Global Card Overrides
+.card {
+  --bs-card-bg: var(--bs-secondary-bg);
+  --bs-card-border-color: var(--bs-border-color);
+  transition: border-color 0.2s ease;
+}
+
+// 6. Global Form Overrides
+.form-control,
+.form-select {
+  background-color: var(--bs-tertiary-bg);
+  border-color: var(--bs-border-color);
+  color: var(--bs-body-color);
+
+  &:focus {
+    background-color: var(--bs-tertiary-bg);
+    color: #fff;
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.15);
+  }
+
+  &::placeholder {
+    color: #555568;
+  }
 }

@@ -1,0 +1,147 @@
+{
+  "brand": "Skaie",
+
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "profile": "Profil",
+    "addresses": "Adresses"
+  },
+
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous à votre compte",
+      "email": "Adresse email",
+      "email_placeholder": "vous@exemple.com",
+      "password": "Mot de passe",
+      "password_placeholder": "••••••••",
+      "show": "Afficher",
+      "hide": "Masquer",
+      "submit": "Se connecter",
+      "submitting": "Connexion...",
+      "no_account": "Vous n'avez pas de compte ?",
+      "register_link": "Créer un compte"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "subtitle": "Commencez vos achats avec Skaie",
+      "name": "Nom complet",
+      "name_placeholder": "Jean Dupont",
+      "email": "Adresse email",
+      "email_placeholder": "vous@exemple.com",
+      "password": "Mot de passe",
+      "password_placeholder": "Min. 8 caractères",
+      "confirm_password": "Confirmer le mot de passe",
+      "confirm_placeholder": "Répétez le mot de passe",
+      "submit": "Créer un compte",
+      "submitting": "Création du compte...",
+      "has_account": "Vous avez déjà un compte ?",
+      "login_link": "Se connecter"
+    },
+    "verify": {
+      "title": "Vérifiez votre boîte mail",
+      "subtitle": "Nous avons envoyé un code à 6 chiffres à",
+      "verify_btn": "Vérifier l'email",
+      "verifying": "Vérification...",
+      "didnt_receive": "Vous ne l'avez pas reçu ?",
+      "resend": "Renvoyer le code",
+      "resending": "Envoi...",
+      "resend_in": "Renvoyer dans {{seconds}}s",
+      "resent_success": "Un nouveau code a été envoyé à votre adresse email."
+    },
+    "logout": "Se déconnecter",
+    "logging_out": "Déconnexion..."
+  },
+
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Bienvenue, {{name}}",
+    "role": "Rôle",
+    "email": "Email",
+    "verification": "Vérification",
+    "phone": "Téléphone",
+    "verified": "✓ Vérifié",
+    "unverified": "✗ Non vérifié",
+    "not_set": "Non renseigné",
+    "quick_actions": "Actions rapides",
+    "edit_profile": "Modifier le profil",
+    "manage_addresses": "Gérer les adresses"
+  },
+
+  "profile": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles",
+    "personal_info": "Informations personnelles",
+    "personal_info_sub": "Mettez à jour votre nom, email et coordonnées",
+    "name": "Nom complet",
+    "name_placeholder": "Jean Dupont",
+    "email": "Adresse email",
+    "email_placeholder": "vous@exemple.com",
+    "phone": "Numéro de téléphone",
+    "phone_placeholder": "+237 6 00 00 00 00",
+    "dob": "Date de naissance",
+    "save": "Enregistrer les modifications",
+    "saving": "Enregistrement...",
+    "save_success": "Profil mis à jour avec succès.",
+    "change_password": "Changer le mot de passe",
+    "change_password_sub": "Sécurisez votre compte avec un mot de passe fort",
+    "current_password": "Mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "new_password_placeholder": "Min. 8 caractères",
+    "confirm_password": "Confirmer le nouveau mot de passe",
+    "confirm_placeholder": "Répétez le nouveau mot de passe",
+    "update_password": "Mettre à jour le mot de passe",
+    "updating": "Mise à jour...",
+    "password_success": "Mot de passe modifié avec succès."
+  },
+
+  "addresses": {
+    "title": "Adresses",
+    "subtitle": "Gérez vos adresses de livraison enregistrées",
+    "add": "Ajouter une adresse",
+    "new_address": "Nouvelle adresse",
+    "edit_address": "Modifier l'adresse",
+    "label": "Étiquette (optionnel)",
+    "label_placeholder": "ex : Domicile, Travail",
+    "street_1": "Adresse",
+    "street_1_placeholder": "123 Rue Principale",
+    "street_2": "Appartement, suite, etc. (optionnel)",
+    "street_2_placeholder": "Apt 4B",
+    "city": "Ville",
+    "city_placeholder": "Yaoundé",
+    "state": "État / Province",
+    "state_placeholder": "Centre",
+    "zip": "Code postal",
+    "zip_placeholder": "00000",
+    "country": "Pays",
+    "country_placeholder": "Cameroun",
+    "phone": "Numéro de téléphone",
+    "phone_placeholder": "+237 6 00 00 00 00",
+    "set_default": "Définir comme adresse par défaut",
+    "cancel": "Annuler",
+    "save": "Ajouter l'adresse",
+    "update": "Mettre à jour",
+    "saving": "Enregistrement...",
+    "default_badge": "Par défaut",
+    "set_default_btn": "Par défaut",
+    "setting_default": "Définition...",
+    "edit_btn": "Modifier",
+    "delete_btn": "Supprimer",
+    "deleting": "Suppression...",
+    "empty": "Aucune adresse enregistrée",
+    "add_first": "Ajouter votre première adresse"
+  },
+
+  "validation": {
+    "required": "Ce champ est obligatoire.",
+    "email": "Saisissez une adresse email valide.",
+    "min_chars": "Minimum {{min}} caractères requis.",
+    "password_mismatch": "Les mots de passe ne correspondent pas.",
+    "password_different": "Le nouveau mot de passe doit être différent."
+  },
+
+  "common": {
+    "loading": "Chargement...",
+    "error_generic": "Une erreur est survenue. Veuillez réessayer."
+  }
+}

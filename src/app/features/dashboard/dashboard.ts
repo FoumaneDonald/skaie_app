@@ -2,10 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { User } from '../../core/models/auth.model';
 import { AuthStateService } from '../../core/services/auth.state';
 import { Auth } from '../../core/services/auth';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

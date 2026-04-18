@@ -1,0 +1,12 @@
+<button class="btn btn-dark border-secondary rounded-pill d-flex align-items-center gap-2 px-3 py-1 lang-btn"
+    (click)="lang.toggle()" [attr.aria-label]="'Switch to ' + (lang.activeLang() === 'en' ? 'French' : 'English')"
+    [title]="lang.activeLang() === 'en' ? 'Passer en français' : 'Switch to English'">
+
+    <span class="lang-flag-wrapper d-flex align-items-center justify-content-center">
+        {{ lang.activeLang() === 'en' ? '🇫🇷' : '🇬🇧' }}
+    </span>
+
+    <span class="lang-label text-uppercase fw-bold text-secondary">
+        {{ lang.activeLang() === 'en' ? 'FR' : 'EN' }}
+    </span>
+</button>
