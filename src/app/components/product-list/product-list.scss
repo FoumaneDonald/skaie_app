@@ -1,0 +1,159 @@
+// --- Variables de thèmes ---
+$primary: #2c3e50;
+$accent: #3498db;
+$success: #27ae60;
+$danger: #e74c3c;
+$bg-body: #f4f7f6;
+$white: #ffffff;
+$text-main: #333;
+$text-muted: #7f8c8d;
+$shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+.admin-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// --- Header ---
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h2 {
+        color: $primary;
+        font-weight: 700;
+        margin: 0;
+        position: relative;
+        &:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: $accent;
+            margin-top: 8px;
+        }
+    }
+
+    .btn-add-main {
+        background: $success;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        &:hover { background: darken($success, 10%); transform: scale(1.05); }
+    }
+}
+
+// --- Grille de produits ---
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+// --- Carte Produit ---
+.product-card {
+    background: $white;
+    border-radius: 15px;
+    box-shadow: $shadow;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+
+    &:hover { transform: translateY(-10px); }
+
+    .card-content {
+        padding: 20px;
+        flex-grow: 1;
+
+        .badge-category {
+            background: rgba($accent, 0.1);
+            color: $accent;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            margin: 15px 0 10px;
+            font-size: 1.3rem;
+            color: $primary;
+        }
+
+        .desc {
+            color: $text-muted;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            height: 4.5em;
+            overflow: hidden;
+        }
+    }
+
+    .card-footer {
+        padding: 15px 20px;
+        background: #fcfcfc;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .price-tag {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: $primary;
+        }
+
+        .stock-info {
+            font-size: 0.8rem;
+            color: $text-muted;
+            &.low { color: $danger; font-weight: bold; }
+        }
+    }
+
+    .card-actions {
+        padding: 10px 20px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+
+        button {
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-edit {
+            background: #f1f1f1;
+            color: $primary;
+            &:hover { background: #e2e2e2; }
+        }
+
+        .btn-delete {
+            background: rgba($danger, 0.1);
+            color: $danger;
+            &:hover { background: $danger; color: white; }
+        }
+    }
+}
+
+// --- État vide ---
+.empty-state {
+    text-align: center;
+    padding: 50px;
+    background: #fff;
+    border-radius: 15px;
+    color: $text-muted;
+}

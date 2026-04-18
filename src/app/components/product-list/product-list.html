@@ -1,0 +1,40 @@
+<div class="admin-container">
+    
+    <header class="header-actions">
+        <h2>Gestion du Stock</h2>
+        <button class="btn-add-main">+ Nouveau Produit</button>
+    </header>
+
+    <div class="product-grid">
+        @for (product of products; track product.id) {
+            <article class="product-card">
+                
+                <div class="card-content">
+                    <span class="badge-category">{{ product.category || 'Non classé' }}</span>
+                    <h3>{{ product.name }}</h3>
+                    <p class="desc">{{ product.description }}</p>
+                </div>
+
+                <div class="card-footer">
+                    <div class="price-tag">{{ product.price }} €</div>
+                    <div class="stock-info" [class.low]="product.stock < 10">
+                        Stock: {{ product.stock }}
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn-edit">Modifier</button>
+                    <button class="btn-delete" (click)="onDelete(product.id!)">
+                        Supprimer
+                    </button>
+                </div>
+
+            </article>
+        } @empty {
+            <div class="empty-state">
+                <p>Aucun produit n'est disponible dans la base de données.</p>
+            </div>
+        }
+    </div>
+
+</div>
