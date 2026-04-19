@@ -1,0 +1,97 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Commande #{{ order()?.id }}</h1>
+      <p class="page-sub">Détail de votre commande</p>
+    </div>
+    <a routerLink="/orders" class="btn btn--ghost btn--sm">← Mes commandes</a>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state"><span class="spinner"></span></div>
+  } @else if (error()) {
+    <div class="alert alert--error">{{ error() }}</div>
+  } @else if (order(); as o) {
+    <div class="detail-grid">
+
+      <!-- Items -->
+      <div class="detail-section card">
+        <h2 class="section-title">Articles commandés</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Qté</th>
+              <th>Prix unit.</th>
+              <th>Sous-total</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of o.items; track item.id) {
+              <tr>
+                <td style="color: var(--text-primary); font-weight: 500">{{ item.product?.name ?? 'Produit #' + item.product_id }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ formatPrice(item.unit_price) }}</td>
+                <td style="color: var(--accent); font-weight: 600">{{ formatPrice(item.subtotal) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <div class="total-row"><span>Sous-total</span><span>{{ formatPrice(o.subtotal) }}</span></div>
+          <div class="total-row"><span>Livraison</span><span>{{ formatPrice(o.shipping_fee) }}</span></div>
+          <div class="total-row total-row--grand"><span>Total</span><span>{{ formatPrice(o.total) }}</span></div>
+        </div>
+      </div>
+
+      <div class="side-panels">
+        <!-- Status & Payment -->
+        <div class="card">
+          <h2 class="section-title">Statut</h2>
+          <div class="info-row">
+            <span>Commande</span>
+            <span class="badge badge--{{ o.status }}">{{ o.status }}</span>
+          </div>
+          <div class="info-row">
+            <span>Paiement</span>
+            @if (o.payment) {
+              <span class="badge badge--{{ o.payment.status }}">{{ o.payment.status }}</span>
+            } @else {
+              <span class="badge badge--pending-pay">Non payé</span>
+            }
+          </div>
+          <div class="info-row">
+            <span>Date</span>
+            <span>{{ o.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          @if (o.status === 'pending' && (!o.payment || o.payment.status !== 'succeeded')) {
+            <a [routerLink]="['/checkout/payment', o.id]" class="btn btn--primary btn--full" style="margin-top: 14px">
+              💳 Payer maintenant
+            </a>
+          }
+        </div>
+
+        <!-- Shipping address -->
+        <div class="card">
+          <h2 class="section-title">Adresse de livraison</h2>
+          <div class="address-block">
+            <p>{{ o.shipping_name }}</p>
+            <p>{{ o.shipping_street }}</p>
+            <p>{{ o.shipping_city }}@if (o.shipping_zip) { {{ o.shipping_zip }} }</p>
+            @if (o.shipping_state) { <p>{{ o.shipping_state }}</p> }
+            <p>{{ o.shipping_country }}</p>
+            @if (o.shipping_phone) { <p>📞 {{ o.shipping_phone }}</p> }
+          </div>
+        </div>
+
+        @if (o.notes) {
+          <div class="card">
+            <h2 class="section-title">Notes</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6">{{ o.notes }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

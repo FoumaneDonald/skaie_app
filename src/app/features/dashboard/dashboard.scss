@@ -98,3 +98,20 @@
     transform: translateY(-1px);
   }
 }
+
+// ── Stats supplémentaires ─────────────────────────────────────
+.stat-value--big {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.stat-card--accent {
+  border-color: var(--accent-dim);
+  background: linear-gradient(135deg, var(--surface), rgba(108,99,255,0.05));
+  .stat-value--big { color: var(--accent); }
+}
+
+.stat-card--success {
+  .stat-value--big { color: var(--success); }
+}

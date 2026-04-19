@@ -1,59 +1,96 @@
 <div class="page">
-    <div class="page-header">
-        <div>
-            <h1 class="page-title">Dashboard</h1>
-            <p class="page-sub">Welcome back{{ user() ? ', ' + user()!.name : '' }}</p>
-        </div>
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-sub">Bienvenue{{ user() ? ', ' + user()!.name : '' }} 👋</p>
     </div>
+  </div>
 
-    @if (user()) {
+  @if (user()) {
+
+    <!-- Infos utilisateur -->
     <div class="stats-grid">
-        <div class="stat-card">
-            <span class="stat-label">Role</span>
-            <span class="stat-value">
-                <span class="role-badge role-badge--{{ user()!.role }}">{{ user()!.role }}</span>
-            </span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Email</span>
-            <span class="stat-value stat-value--sm">{{ user()!.email }}</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Verification</span>
-            <span class="stat-value" [class.stat-value--ok]="user()!.email_verified_at">
-                {{ user()!.email_verified_at ? '✓ Verified' : '✗ Unverified' }}
-            </span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Phone</span>
-            <span class="stat-value stat-value--sm">{{ user()!.phone ?? 'Not set' }}</span>
-        </div>
+      <div class="stat-card">
+        <span class="stat-label">Rôle</span>
+        <span class="stat-value">
+          <span class="role-badge role-badge--{{ user()!.role }}">{{ user()!.role }}</span>
+        </span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Email</span>
+        <span class="stat-value stat-value--sm">{{ user()!.email }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Vérification</span>
+        <span class="stat-value" [class.stat-value--ok]="user()!.email_verified_at">
+          {{ user()!.email_verified_at ? '✓ Vérifié' : '✗ Non vérifié' }}
+        </span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Téléphone</span>
+        <span class="stat-value stat-value--sm">{{ user()!.phone ?? 'Non renseigné' }}</span>
+      </div>
     </div>
 
-    <div class="quick-links">
-        <h2 class="section-title">Quick actions</h2>
-        <div class="link-grid">
-            <a routerLink="/profile" class="link-card">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                </svg>
-                <span>Edit profile</span>
-            </a>
-            <a routerLink="/addresses" class="link-card">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                </svg>
-                <span>Manage addresses</span>
-            </a>
+    <!-- Stats commandes (customer) -->
+    @if (isCustomer) {
+      <div class="stats-grid" style="margin-top: 16px">
+        <div class="stat-card stat-card--accent">
+          <span class="stat-label">Commandes</span>
+          <span class="stat-value stat-value--big">{{ orderCount() }}</span>
         </div>
-    </div>
-    } @else {
-    <div class="skeleton-group">
-        <div class="skeleton skeleton--card"></div>
-    </div>
+        <div class="stat-card">
+          <span class="stat-label">En attente</span>
+          <span class="stat-value stat-value--big">{{ pendingOrders() }}</span>
+        </div>
+        <div class="stat-card stat-card--success">
+          <span class="stat-label">Total dépensé</span>
+          <span class="stat-value stat-value--big">{{ formatPrice(totalSpent()) }}</span>
+        </div>
+      </div>
     }
+
+    <!-- Actions rapides -->
+    <div class="quick-links">
+      <h2 class="section-title">Actions rapides</h2>
+      <div class="link-grid">
+
+        @if (isCustomer) {
+          <a routerLink="/shop" class="link-card">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>Boutique</span>
+          </a>
+          <a routerLink="/orders" class="link-card">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Mes commandes</span>
+          </a>
+          <a routerLink="/payments" class="link-card">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <span>Mes paiements</span>
+          </a>
+          <a routerLink="/profile" class="link-card">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Mon profil</span>
+          </a>
+        }
+
+        @if (isAdmin) {
+          <a routerLink="/admin/orders" class="link-card">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            <span>Commandes</span>
+          </a>
+          <a routerLink="/admin/payments" class="link-card">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <span>Paiements</span>
+          </a>
+        }
+
+      </div>
+    </div>
+
+  } @else {
+    <div class="skeleton-group">
+      <div class="skeleton skeleton--card"></div>
+    </div>
+  }
 </div>

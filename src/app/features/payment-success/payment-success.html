@@ -1,0 +1,33 @@
+<div class="success-page">
+  <div class="success-card">
+    <div class="success-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+    <h1>Paiement confirmé !</h1>
+    <p class="success-sub">Votre commande n°{{ orderId() }} a été passée avec succès.</p>
+
+    @if (status()) {
+      <div class="success-details">
+        <div class="detail-row">
+          <span>Montant payé</span>
+          <strong>{{ formatPrice(status()!.amount, status()!.currency.toUpperCase()) }}</strong>
+        </div>
+        <div class="detail-row">
+          <span>Statut commande</span>
+          <span class="badge badge--{{ status()!.order_status }}">{{ status()!.order_status }}</span>
+        </div>
+        @if (status()!.paid_at) {
+          <div class="detail-row">
+            <span>Payé le</span>
+            <span>{{ status()!.paid_at | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="success-actions">
+      <a routerLink="/orders" class="btn btn--primary">Voir mes commandes</a>
+      <a routerLink="/shop" class="btn btn--ghost">Continuer les achats</a>
+    </div>
+  </div>
+</div>

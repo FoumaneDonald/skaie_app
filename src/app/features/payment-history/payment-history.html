@@ -1,0 +1,112 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">{{ isAdmin() ? 'Gestion des paiements' : 'Mes paiements' }}</h1>
+      <p class="page-sub">Historique de vos transactions</p>
+    </div>
+
+    @if (isAdmin()) {
+      <select class="filter-select" [value]="filterStatus()"
+        (change)="filterStatus.set($any($event.target).value); load()">
+        <option value="">Tous les statuts</option>
+        <option value="pending">En attente</option>
+        <option value="succeeded">Réussis</option>
+        <option value="failed">Échoués</option>
+        <option value="refunded">Remboursés</option>
+      </select>
+    }
+  </div>
+
+  <!-- Flash message -->
+  @if (flashMsg()) {
+    <div class="alert alert--{{ flashType() }}" style="margin-bottom: 20px">{{ flashMsg() }}</div>
+  }
+
+  <!-- Stats admin -->
+  @if (isAdmin() && !loading()) {
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Total encaissé</span>
+        <span class="stat-value success">{{ formatPrice(totalSucceeded()) }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Réussis</span>
+        <span class="stat-value">{{ countByStatus('succeeded') }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Échoués</span>
+        <span class="stat-value error">{{ countByStatus('failed') }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Remboursés</span>
+        <span class="stat-value warn">{{ countByStatus('refunded') }}</span>
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="loading-state"><span class="spinner"></span> Chargement...</div>
+  } @else if (error()) {
+    <div class="alert alert--error">{{ error() }}</div>
+  } @else if (payments().length === 0) {
+    <div class="empty-state">
+      <span class="empty-icon">💳</span>
+      <strong>Aucun paiement</strong>
+      <p>Vos transactions apparaîtront ici.</p>
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            @if (isAdmin()) { <th>Client</th> }
+            <th>Commande</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Payé le</th>
+            <th>Créé le</th>
+            @if (isAdmin()) { <th>Action</th> }
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of payments(); track p.id) {
+            <tr>
+              <td><code class="id-code">#{{ p.id }}</code></td>
+              @if (isAdmin()) {
+                <td>
+                  <div class="client-info">
+                    <span class="client-name">{{ p.user?.name }}</span>
+                    <span class="client-email">{{ p.user?.email }}</span>
+                  </div>
+                </td>
+              }
+              <td>
+                <a [routerLink]="isAdmin() ? ['/admin/orders', p.order_id] : ['/orders', p.order_id]"
+                   class="order-link">
+                  Commande #{{ p.order_id }}
+                </a>
+              </td>
+              <td class="amount">{{ formatPrice(p.amount, p.currency) }}</td>
+              <td><span class="badge badge--{{ p.status }}">{{ statusLabel(p.status) }}</span></td>
+              <td>{{ p.paid_at ? (p.paid_at | date:'dd/MM/yyyy HH:mm') : '—' }}</td>
+              <td>{{ p.created_at | date:'dd/MM/yyyy' }}</td>
+              @if (isAdmin()) {
+                <td>
+                  @if (p.status === 'succeeded') {
+                    <button class="btn-refund" (click)="refund(p)"
+                      [disabled]="refunding() === p.id">
+                      {{ refunding() === p.id ? '...' : 'Rembourser' }}
+                    </button>
+                  } @else {
+                    <span class="no-action">—</span>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

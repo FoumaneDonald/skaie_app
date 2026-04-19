@@ -1,0 +1,314 @@
+@use "sass:color";
+$bg: #0a0a0f;
+$surface: #111118;
+$surface2: #161622;
+$border: #1e1e2a;
+$accent: #6c63ff;
+$text: #f0f0f5;
+$muted: #6b6b80;
+$success: #22c55e;
+$danger: #ef4444;
+$warning: #f59e0b;
+
+.payment-page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.payment-header {
+  margin-bottom: 32px;
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: $muted;
+    font-size: 13px;
+    margin-bottom: 16px;
+    transition: color 0.15s;
+
+    &:hover { color: $text; }
+  }
+
+  .page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: 4px;
+  }
+
+  .page-sub {
+    color: $muted;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.payment-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Payment Card ─────────────────────────────────────────────
+.payment-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  gap: 16px;
+  text-align: center;
+  color: $muted;
+  font-size: 14px;
+}
+
+.error-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba($danger, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $danger;
+}
+
+.error-msg { color: $text; }
+
+.spinner-lg {
+  width: 40px;
+  height: 40px;
+  border: 3px solid $border;
+  border-top-color: $accent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.card-section {
+  margin-bottom: 20px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+// Conteneur pour Stripe Elements
+.stripe-element-container {
+  background: #1a1a2a;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 48px;
+  transition: border-color 0.15s;
+
+  &:focus-within {
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.15);
+  }
+}
+
+.card-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: $danger;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sandbox-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba($warning, 0.08);
+  border: 1px solid rgba($warning, 0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: $warning;
+  margin-bottom: 20px;
+  svg { flex-shrink: 0; margin-top: 1px; }
+  strong { font-weight: 700; letter-spacing: 0.05em; }
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+
+  &--error {
+    background: rgba($danger, 0.1);
+    border: 1px solid rgba($danger, 0.25);
+    color: $danger;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 12px 20px;
+  text-decoration: none;
+
+  &--pay {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    background: $accent;
+    color: #fff;
+    border-radius: 10px;
+    margin-top: 4px;
+
+    &:hover:not(:disabled) {
+      background: color.adjust($accent, $lightness: 8%);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba($accent, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &--secondary {
+    background: $surface2;
+    color: $text;
+    border: 1px solid $border;
+    &:hover { background: $border; }
+  }
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.stripe-branding {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: $muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+// ── Order Summary ─────────────────────────────────────────────
+.order-summary {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 24px;
+  position: sticky;
+  top: 24px;
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $text;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $border;
+}
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+
+  .item-name { color: $text; }
+  .item-qty { color: $muted; text-align: right; }
+  .item-price { color: $text; font-weight: 500; min-width: 70px; text-align: right; }
+}
+
+.summary-totals {
+  border-top: 1px solid $border;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: $muted;
+
+  &--final {
+    font-size: 16px;
+    font-weight: 700;
+    color: $text;
+    margin-top: 4px;
+  }
+}
+
+.shipping-info {
+  border-top: 1px solid $border;
+  padding-top: 16px;
+
+  .info-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $muted;
+    margin-bottom: 6px;
+  }
+
+  .info-value {
+    font-size: 13px;
+    color: $text;
+    line-height: 1.5;
+    &.muted { color: $muted; }
+  }
+}

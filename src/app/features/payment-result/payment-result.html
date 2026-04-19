@@ -1,0 +1,59 @@
+<div class="result-page">
+  <div class="result-card">
+
+    @if (status() === 'success') {
+      <div class="result-icon result-icon--success">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h1 class="result-title">Paiement réussi !</h1>
+      <p class="result-sub">
+        Votre commande <strong>#{{ orderId() }}</strong> a été confirmée et est en cours de traitement.
+      </p>
+      <div class="result-actions">
+        <a [routerLink]="['/orders', orderId()]" class="btn btn--primary">Voir la commande</a>
+        <a routerLink="/products" class="btn btn--secondary">Continuer les achats</a>
+      </div>
+    }
+
+    @if (status() === 'failed') {
+      <div class="result-icon result-icon--failed">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <h1 class="result-title">Paiement refusé</h1>
+      <p class="result-sub">
+        @if (reason()) {
+          {{ reason() }}
+        } @else {
+          Votre paiement n'a pas pu être traité. Veuillez réessayer.
+        }
+      </p>
+      <div class="result-actions">
+        <a [routerLink]="['/orders', orderId(), 'pay']" class="btn btn--primary">Réessayer le paiement</a>
+        <a routerLink="/orders" class="btn btn--secondary">Mes commandes</a>
+      </div>
+    }
+
+    @if (status() === 'pending') {
+      <div class="result-icon result-icon--pending">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h1 class="result-title">Paiement en attente</h1>
+      <p class="result-sub">
+        Votre paiement est en cours de vérification. Nous vous notifierons dès que le statut sera mis à jour.
+      </p>
+      <div class="result-actions">
+        <a routerLink="/payments" class="btn btn--primary">Historique des paiements</a>
+        <a routerLink="/orders" class="btn btn--secondary">Mes commandes</a>
+      </div>
+    }
+
+    @if (!status()) {
+      <div class="result-icon result-icon--pending">
+        <div class="spinner"></div>
+      </div>
+      <h1 class="result-title">Vérification...</h1>
+      <p class="result-sub">Vérification du statut du paiement en cours.</p>
+    }
+
+  </div>
+</div>

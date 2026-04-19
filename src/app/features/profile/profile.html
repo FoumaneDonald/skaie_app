@@ -1,0 +1,65 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Mon profil</h1>
+      <p class="page-sub">Gérez vos informations personnelles</p>
+    </div>
+  </div>
+
+  @if (successMsg()) { <div class="alert alert--success" style="margin-bottom:20px">{{ successMsg() }}</div> }
+  @if (errorMsg())   { <div class="alert alert--error"   style="margin-bottom:20px">{{ errorMsg() }}</div>   }
+
+  <div class="profile-grid">
+    <!-- Info -->
+    <div class="card">
+      <div class="avatar-row">
+        <div class="profile-avatar">{{ user()?.name?.charAt(0)?.toUpperCase() }}</div>
+        <div>
+          <div class="profile-name">{{ user()?.name }}</div>
+          <div class="profile-email">{{ user()?.email }}</div>
+          <span class="badge badge--{{ user()?.role }}">{{ user()?.role }}</span>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="save()" novalidate class="profile-form">
+        <div class="field">
+          <label>Nom complet</label>
+          <input formControlName="name" placeholder="Votre nom" />
+        </div>
+        <div class="field">
+          <label>Téléphone</label>
+          <input formControlName="phone" placeholder="+237 6XX XX XX XX" />
+        </div>
+        <div class="field">
+          <label>Date de naissance</label>
+          <input formControlName="date_of_birth" type="date" />
+        </div>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          @if (saving()) { <span class="spinner"></span> Sauvegarde... } @else { Enregistrer }
+        </button>
+      </form>
+    </div>
+
+    <!-- Password -->
+    <div class="card">
+      <h2 class="section-title">Changer le mot de passe</h2>
+      <form [formGroup]="pwForm" (ngSubmit)="savePw()" novalidate class="profile-form">
+        <div class="field">
+          <label>Mot de passe actuel</label>
+          <input formControlName="current_password" type="password" placeholder="••••••••" />
+        </div>
+        <div class="field">
+          <label>Nouveau mot de passe</label>
+          <input formControlName="password" type="password" placeholder="8 caractères min." />
+        </div>
+        <div class="field">
+          <label>Confirmer le mot de passe</label>
+          <input formControlName="password_confirmation" type="password" placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn--ghost" [disabled]="savingPw()">
+          @if (savingPw()) { <span class="spinner"></span> Modification... } @else { Modifier }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
