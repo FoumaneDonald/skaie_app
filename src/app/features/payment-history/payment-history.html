@@ -1,0 +1,134 @@
+<div class="container-fluid p-0 pb-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold text-white mb-1">{{ isAdmin() ? 'Gestion des paiements' : 'Mes paiements' }}</h1>
+      <p class="text-muted small mb-0">Historique de vos transactions</p>
+    </div>
+
+    @if (isAdmin()) {
+    <select class="form-select form-select-sm bg-dark border-secondary-subtle text-white w-auto"
+      [value]="filterStatus()" (change)="filterStatus.set($any($event.target).value); load()">
+      <option value="">Tous les statuts</option>
+      <option value="pending">En attente</option>
+      <option value="succeeded">Réussis</option>
+      <option value="failed">Échoués</option>
+      <option value="refunded">Remboursés</option>
+    </select>
+    }
+  </div>
+
+  @if (flashMsg()) {
+  <div class="alert border-0 bg-opacity-10 text-center mb-4 py-2"
+    [ngClass]="'bg-' + flashType() + ' text-' + flashType()">
+    {{ flashMsg() }}
+  </div>
+  }
+
+  <!-- Admin Stats -->
+  @if (isAdmin() && !loading()) {
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card h-100 bg-dark border-success-subtle">
+        <div class="card-body">
+          <div class="extra-small text-muted text-uppercase fw-bold tracking-wider mb-1">Encaissé</div>
+          <div class="h4 fw-black text-success mb-0">{{ formatPrice(totalSucceeded()) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100 bg-dark border-secondary-subtle">
+        <div class="card-body">
+          <div class="extra-small text-muted text-uppercase fw-bold tracking-wider mb-1">Réussis</div>
+          <div class="h4 fw-black text-white mb-0">{{ countByStatus('succeeded') }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100 bg-dark border-danger-subtle">
+        <div class="card-body">
+          <div class="extra-small text-muted text-uppercase fw-bold tracking-wider mb-1">Échoués</div>
+          <div class="h4 fw-black text-danger mb-0">{{ countByStatus('failed') }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100 bg-dark border-warning-subtle">
+        <div class="card-body">
+          <div class="extra-small text-muted text-uppercase fw-bold tracking-wider mb-1">Remboursés</div>
+          <div class="h4 fw-black text-warning mb-0">{{ countByStatus('refunded') }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+  } @else if (payments().length === 0) {
+  <div class="card bg-dark border-secondary-subtle py-5 text-center">
+    <div class="card-body">
+      <div class="display-6 opacity-25 mb-3">💳</div>
+      <h5 class="text-white fw-bold">Aucun paiement</h5>
+      <p class="text-muted small">Vos transactions apparaîtront ici.</p>
+    </div>
+  </div>
+  } @else {
+  <div class="card bg-dark border-secondary-subtle overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr class="extra-small text-uppercase tracking-wider">
+            <th class="ps-4">#</th>
+            @if (isAdmin()) { <th>Client</th> }
+            <th>Commande</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Date</th>
+            @if (isAdmin()) { <th class="text-end pe-4">Action</th> }
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of payments(); track p.id) {
+          <tr class="border-secondary-subtle">
+            <td class="ps-4"><code class="text-muted">#{{ p.id }}</code></td>
+            @if (isAdmin()) {
+            <td>
+              <div class="fw-bold text-white small">{{ p.user?.name }}</div>
+              <div class="extra-small text-muted">{{ p.user?.email }}</div>
+            </td>
+            }
+            <td>
+              <a [routerLink]="isAdmin() ? ['/admin/orders', p.order_id] : ['/orders', p.order_id]"
+                class="text-primary text-decoration-none fw-bold small">
+                Commande #{{ p.order_id }}
+              </a>
+            </td>
+            <td class="fw-black text-white">{{ formatPrice(p.amount, p.currency) }}</td>
+            <td>
+              <span class="badge rounded-pill fw-bold" [ngClass]="{
+                                        'bg-success-subtle text-success': p.status === 'succeeded',
+                                        'bg-danger-subtle text-danger': p.status === 'failed',
+                                        'bg-warning-subtle text-warning': p.status === 'refunded',
+                                        'bg-primary-subtle text-primary': p.status === 'pending'
+                                    }">{{ statusLabel(p.status) }}</span>
+            </td>
+            <td class="small text-muted">{{ p.created_at | date:'dd/MM/yyyy' }}</td>
+            @if (isAdmin()) {
+            <td class="text-end pe-4">
+              @if (p.status === 'succeeded') {
+              <button class="btn btn-sm btn-outline-danger px-3" (click)="refund(p)" [disabled]="refunding() === p.id">
+                {{ refunding() === p.id ? '...' : 'Rembourser' }}
+              </button>
+              } @else { <span class="text-muted small">—</span> }
+            </td>
+            }
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  }
+</div>

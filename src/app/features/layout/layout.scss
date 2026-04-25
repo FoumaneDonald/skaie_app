@@ -1,0 +1,91 @@
+:root {
+  --sidebar-width: 280px;
+  --topbar-height: 60px;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  .sidebar-brand .brand-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+
+  .nav-link {
+    color: var(--bs-secondary-color);
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    &.active {
+      background-color: var(--bs-primary-bg-subtle);
+      color: var(--bs-primary);
+      font-weight: 600;
+    }
+  }
+}
+
+.topbar {
+  height: var(--topbar-height);
+  flex-shrink: 0;
+}
+
+// Mobile specific logic
+@media (max-width: 991.98px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .shell.sidebar-open {
+    .sidebar {
+      transform: translateX(0);
+    }
+    .overlay {
+      display: block !important;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .overlay {
+    display: none !important;
+  }
+}
+
+// Custom internal scrollbar for nav
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.fw-black {
+  font-weight: 900;
+}
+.inset-0 {
+  inset: 0;
+}
+.z-1050 {
+  z-index: 1050;
+}
+.z-1060 {
+  z-index: 1060;
+}

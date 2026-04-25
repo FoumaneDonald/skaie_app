@@ -1,0 +1,172 @@
+<div class="container-fluid p-0 pb-5">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <a [routerLink]="['/orders', orderId()]"
+      class="text-decoration-none text-muted small d-flex align-items-center gap-1 mb-2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+      Retour à la commande
+    </a>
+    <h1 class="h3 fw-bold text-white mb-1">Paiement sécurisé</h1>
+    <p class="text-muted small mb-0 d-flex align-items-center gap-1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      </svg>
+      Vos données sont chiffrées via Stripe
+    </p>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Left Column: Payment Form -->
+    <div class="col-lg-8">
+      <div class="card bg-dark border-secondary-subtle shadow-sm">
+        <div class="card-body p-4 p-md-5">
+
+          <!-- Loading State -->
+          @if (step() === 'loading') {
+          <div class="text-center py-5 text-muted">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <p class="small">Initialisation du paiement...</p>
+          </div>
+          }
+
+          <!-- Error State -->
+          @if (step() === 'error') {
+          <div class="text-center py-5">
+            <div class="text-danger mb-3">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <p class="text-white mb-3">{{ errorMessage() }}</p>
+            <a routerLink="/orders" class="btn btn-outline-secondary border-secondary-subtle text-white px-4">Voir mes
+              commandes</a>
+          </div>
+          }
+
+          <!-- Ready / Processing State -->
+          @if (step() === 'ready' || step() === 'processing') {
+
+          <div class="mb-4">
+            <label
+              class="form-label text-muted small text-uppercase fw-bold tracking-wider d-flex align-items-center gap-2 mb-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" />
+                <line x1="1" y1="10" x2="23" y2="10" />
+              </svg>
+              Informations de carte
+            </label>
+
+            <!-- Stripe Payment Element -->
+            <div id="stripe-payment-element" class="stripe-element-container mb-2"></div>
+
+            @if (cardError()) {
+            <div class="text-danger small d-flex align-items-center gap-1 mt-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              {{ cardError() }}
+            </div>
+            }
+          </div>
+
+          <!-- Sandbox Hint -->
+          <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-warning d-flex gap-2 small mb-4">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              class="mt-1 flex-shrink-0">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4m0 4h.01" />
+            </svg>
+            <span>Mode test — utilisez la carte <strong class="text-white">4242 4242 4242 4242</strong>, date future,
+              CVC quelconque</span>
+          </div>
+
+          @if (errorMessage()) {
+          <div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger small mb-4">{{ errorMessage() }}
+          </div>
+          }
+
+          <!-- Action Button -->
+          <button class="btn btn-primary w-100 py-3 fw-bold fs-6 mb-4" (click)="submitPayment()"
+            [disabled]="step() === 'processing'">
+            @if (step() === 'processing') {
+            <span class="spinner-border spinner-border-sm me-2"></span> Traitement en cours...
+            } @else {
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              class="me-1">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Payer
+            @if (paymentData()) {
+            {{ formatAmount(paymentData()!.amount, paymentData()!.currency) }}
+            }
+            }
+          </button>
+
+          <!-- Stripe Branding -->
+          <div class="text-center text-muted extra-small d-flex align-items-center justify-content-center gap-2">
+            <svg viewBox="0 0 60 25" xmlns="http://www.w3.org/2000/svg" width="36" height="15" fill="#555568">
+              <path
+                d="M59.64 14.28h-8.06c.19 1.93 1.6 2.55 3.2 2.55 1.64 0 2.96-.37 4.05-.95v3.32a8.33 8.33 0 0 1-4.56 1.1c-4.01 0-6.83-2.5-6.83-7.48 0-4.19 2.39-7.52 6.3-7.52 3.92 0 5.96 3.28 5.96 7.5 0 .4-.04 1.26-.06 1.48zm-5.92-5.62c-1.03 0-2.17.73-2.17 2.58h4.25c0-1.85-1.07-2.58-2.08-2.58zM40.95 20.3c-1.44 0-2.32-.6-2.9-1.04l-.02 4.63-4.12.87V5.57h3.76l.08 1.02a4.7 4.7 0 0 1 3.23-1.29c2.9 0 5.62 2.6 5.62 7.4 0 5.23-2.7 7.6-5.65 7.6zM40 8.95c-.95 0-1.54.34-1.97.81l.02 6.12c.4.44.98.78 1.95.78 1.52 0 2.54-1.65 2.54-3.87 0-2.15-1.04-3.84-2.54-3.84zM28.24 5.57h4.13v14.44h-4.13V5.57zm0-4.7L32.37 0v3.36l-4.13.88V.87zm-4.32 9.35v9.79H19.8V5.57h3.7l.12 1.22c1-1.77 3.07-1.41 3.62-1.22v3.79c-.52-.17-2.29-.43-3.32.86zm-9.55 4.25c0 2.43 2.6 1.68 3.12 1.46v3.36c-.55.3-1.54.54-2.89.54a4.15 4.15 0 0 1-4.27-4.24l.01-13.17 4.02-.86v3.54h3.14V9.1h-3.13v5.47zm-4.91.7c0 2.97-2.31 4.66-5.73 4.66a11.2 11.2 0 0 1-4.46-.93v-3.93c1.38.75 3.1 1.31 4.46 1.31.92 0 1.53-.24 1.53-1C5.27 19.86 0 19.17 0 14.35c0-2.86 2.2-4.61 5.51-4.61 1.49 0 2.98.38 4.46.93v3.86c-1.28-.67-2.9-1.21-4.46-1.21-.86 0-1.44.19-1.44.98 0 1.85 5.52.97 5.52 5.29z" />
+            </svg>
+            Paiement sécurisé par Stripe
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Order Summary -->
+    @if (order()) {
+    <div class="col-lg-4">
+      <div class="card bg-dark border-secondary-subtle shadow-sm sticky-top" style="top: 24px; z-index: 10;">
+        <div class="card-body p-4">
+          <h5 class="text-white fw-bold fs-6 mb-3">Résumé de la commande</h5>
+
+          <div class="d-flex flex-column gap-2 mb-4">
+            @for (item of order()!.items; track item.id) {
+            <div class="d-flex justify-content-between align-items-center small">
+              <div class="text-secondary">
+                <span class="text-white fw-medium">{{ item.product_name }}</span>
+                <span class="ms-1 opacity-50">×{{ item.quantity }}</span>
+              </div>
+              <span class="text-muted">{{ formatAmount(item.subtotal, paymentData()?.currency ?? 'eur') }}</span>
+            </div>
+            }
+          </div>
+
+          <div class="border-top border-secondary-subtle pt-3 mb-4">
+            <div class="d-flex justify-content-between mb-2 small">
+              <span class="text-muted">Sous-total</span>
+              <span class="text-white">{{ formatAmount(order()!.subtotal, paymentData()?.currency ?? 'eur') }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 small">
+              <span class="text-muted">Livraison</span>
+              <span class="text-white">{{ formatAmount(order()!.shipping_fee, paymentData()?.currency ?? 'eur')
+                }}</span>
+            </div>
+            <div class="d-flex justify-content-between pt-2 border-top border-secondary-subtle mt-2">
+              <span class="text-white fw-bold">Total</span>
+              <span class="text-primary fw-black fs-5">{{ formatAmount(order()!.total, paymentData()?.currency ?? 'eur')
+                }}</span>
+            </div>
+          </div>
+
+          <div class="bg-secondary bg-opacity-10 p-3 rounded-3">
+            <label class="extra-small text-muted fw-bold text-uppercase tracking-wider d-block mb-1">Livraison à</label>
+            <div class="text-white small fw-bold mb-1">{{ order()!.shipping_name }}</div>
+            <div class="text-muted extra-small">{{ order()!.shipping_street }}, {{ order()!.shipping_city }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

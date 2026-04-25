@@ -1,0 +1,101 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Mes adresses</h1>
+      <p class="page-sub">Gérez vos adresses de livraison</p>
+    </div>
+    @if (!showForm()) {
+    <button class="btn btn--primary btn--sm" (click)="openAdd()">+ Ajouter</button>
+    }
+  </div>
+
+  @if (success()) { <div class="alert alert--success" style="margin-bottom:16px">{{ success() }}</div> }
+  @if (error()) { <div class="alert alert--error" style="margin-bottom:16px">{{ error() }}</div> }
+
+  <!-- Form -->
+  @if (showForm()) {
+  <div class="card form-card">
+    <h2 class="form-title">{{ editId() ? 'Modifier l\'adresse' : 'Nouvelle adresse' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate class="addr-form">
+      <div class="form-row">
+        <div class="field">
+          <label>Étiquette *</label>
+          <input formControlName="label" placeholder="Domicile, Bureau..." />
+        </div>
+        <div class="field">
+          <label>Téléphone</label>
+          <input formControlName="phone" placeholder="+237 6XX XX XX XX" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Adresse ligne 1 *</label>
+        <input formControlName="street_line_1" placeholder="123 rue des Fleurs" />
+      </div>
+      <div class="field">
+        <label>Adresse ligne 2</label>
+        <input formControlName="street_line_2" placeholder="Appartement, bâtiment..." />
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Ville *</label>
+          <input formControlName="city" placeholder="Yaoundé" />
+        </div>
+        <div class="field">
+          <label>Région</label>
+          <input formControlName="state" placeholder="Centre" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Code postal</label>
+          <input formControlName="zip" />
+        </div>
+        <div class="field">
+          <label>Pays</label>
+          <input formControlName="country" placeholder="CM" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn--ghost" (click)="cancel()">Annuler</button>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          @if (saving()) { <span class="spinner"></span> } @else { Enregistrer }
+        </button>
+      </div>
+    </form>
+  </div>
+  }
+
+  <!-- List -->
+  @if (loading()) {
+  <div class="loading-state"><span class="spinner"></span></div>
+  } @else if (addresses().length === 0 && !showForm()) {
+  <div class="empty-state">
+    <span class="empty-icon">📍</span>
+    <strong>Aucune adresse</strong>
+    <p>Ajoutez votre première adresse de livraison.</p>
+  </div>
+  } @else {
+  <div class="addr-grid">
+    @for (a of addresses(); track a.id) {
+    <div class="addr-card" [class.addr-card--default]="a.is_default">
+      <div class="addr-head">
+        <span class="addr-label">{{ a.label }}</span>
+        @if (a.is_default) { <span class="badge badge--processing">Défaut</span> }
+      </div>
+      <div class="addr-body">
+        <p>{{ a.street_line_1 }}@if (a.street_line_2) {, {{ a.street_line_2 }} }</p>
+        <p>{{ a.city }}@if (a.zip) { {{ a.zip }} } · {{ a.country }}</p>
+        @if (a.phone) { <p>📞 {{ a.phone }}</p> }
+      </div>
+      <div class="addr-actions">
+        @if (!a.is_default) {
+        <button class="btn btn--ghost btn--sm" (click)="setDefault(a.id)">Définir défaut</button>
+        }
+        <button class="btn btn--ghost btn--sm" (click)="openEdit(a)">Modifier</button>
+        <button class="btn btn--danger btn--sm" (click)="delete(a.id)">Supprimer</button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>

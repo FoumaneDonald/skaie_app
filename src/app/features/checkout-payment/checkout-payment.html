@@ -1,0 +1,91 @@
+<div class="pay-page">
+  <div class="pay-card">
+
+    <!-- Brand -->
+    <div class="pay-brand">
+      <span class="brand-mark">SK</span>
+      <span class="brand-name">Skaie</span>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step step--done">
+        <div class="step-dot">✓</div>
+        <span>Adresse</span>
+      </div>
+      <div class="step-line step-line--done"></div>
+      <div class="step step--active">
+        <div class="step-dot">2</div>
+        <span>Paiement</span>
+      </div>
+    </div>
+
+    <div class="pay-header">
+      <h1>Paiement sécurisé</h1>
+      @if (!loading() && amount() > 0) {
+      <p class="pay-amount">{{ formatPrice(amount()) }}</p>
+      }
+      <p class="pay-sub">Commande n°{{ orderId() }}</p>
+    </div>
+
+    @if (loading()) {
+    <div class="loading-state">
+      <span class="spinner"></span>
+      Initialisation du paiement...
+    </div>
+    } @else if (error() && !clientSecret()) {
+    <div class="alert alert--error">{{ error() }}</div>
+    <a routerLink="/orders" class="btn btn--ghost btn--full" style="margin-top: 16px">Voir mes commandes</a>
+    } @else {
+
+    @if (error()) {
+    <div class="alert alert--error" style="margin-bottom: 16px">{{ error() }}</div>
+    }
+
+    <!-- Stripe Card Element -->
+    <div class="card-section">
+      <label class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+          <line x1="1" y1="10" x2="23" y2="10" />
+        </svg>
+        Informations de carte
+      </label>
+      <div class="stripe-element-wrap" [class.stripe-element-wrap--error]="cardError()">
+        <div #cardElement></div>
+      </div>
+      @if (cardError()) {
+      <div class="field__error">{{ cardError() }}</div>
+      }
+    </div>
+
+    <!-- Test cards hint -->
+    <div class="test-hint">
+      <strong>🧪 Mode sandbox</strong> — Utilisez <code>4242 4242 4242 4242</code> · Exp: toute date future · CVC: 123
+    </div>
+
+    <button class="btn btn--primary btn--full pay-btn" (click)="pay()" [disabled]="paying()">
+      @if (paying()) {
+      <span class="spinner"></span> Traitement en cours...
+      } @else {
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+        <line x1="1" y1="10" x2="23" y2="10" />
+      </svg>
+      Payer {{ formatPrice(amount()) }}
+      }
+    </button>
+
+    <div class="secure-note">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg>
+      Paiement sécurisé via Stripe SSL/TLS
+    </div>
+    }
+  </div>
+</div>

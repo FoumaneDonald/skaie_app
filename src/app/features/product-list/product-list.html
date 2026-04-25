@@ -1,0 +1,171 @@
+<div class="container-fluid p-0 pb-5">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold text-white mb-1">Boutique</h1>
+      <p class="text-muted small mb-0">{{ total() }} produit(s) disponible(s)</p>
+    </div>
+
+    <a routerLink="/cart"
+      class="btn btn-dark border-secondary-subtle rounded-pill px-3 py-2 d-flex align-items-center gap-2 position-relative shadow-sm hover-lift">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+      <span class="small fw-bold text-white">Mon Panier</span>
+      @if (cart.count() > 0) {
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary border border-dark">
+        {{ cart.count() }}
+      </span>
+      }
+    </a>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="card bg-dark border-secondary-subtle shadow-sm mb-5">
+    <div class="card-body p-3 p-md-4">
+      <div class="row g-3">
+        <div class="col-12 col-md-4 col-lg-3">
+          <input type="text" class="form-control form-control-sm" placeholder="Rechercher..." [value]="search()"
+            (input)="search.set($any($event.target).value)" (keyup.enter)="applyFilters()" />
+        </div>
+        <div class="col-12 col-md-4 col-lg-3">
+          <input type="text" class="form-control form-control-sm" placeholder="Catégorie..." [value]="category()"
+            (input)="category.set($any($event.target).value)" (keyup.enter)="applyFilters()" />
+        </div>
+        <div class="col-12 col-md-4 col-lg-2">
+          <select class="form-select form-select-sm" [value]="sort()"
+            (change)="sort.set($any($event.target).value); applyFilters()">
+            <option value="newest">Plus récents</option>
+            <option value="price_asc">Prix croissant</option>
+            <option value="price_desc">Prix décroissant</option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-4 d-flex gap-2 justify-content-lg-end">
+          <button class="btn btn-sm btn-primary px-4 fw-bold" (click)="applyFilters()">Filtrer</button>
+          <button class="btn btn-sm btn-outline-secondary border-secondary-subtle text-white-50 px-3"
+            (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted small mt-3">Chargement des produits...</p>
+  </div>
+  } @else if (error()) {
+  <div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger small">{{ error() }}</div>
+  } @else if (products().length === 0) {
+  <div class="card bg-dark border-secondary-subtle border-dashed py-5 text-center">
+    <div class="card-body">
+      <div class="display-5 text-muted mb-3 opacity-25">🛍️</div>
+      <h5 class="text-white fw-bold">Aucun produit trouvé</h5>
+      <p class="text-muted small mb-4">Essayez d'ajuster vos critères de recherche.</p>
+      <button class="btn btn-sm btn-outline-primary px-4" (click)="reset()">Tout afficher</button>
+    </div>
+  </div>
+  } @else {
+  <!-- Products Grid -->
+  <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    @for (product of products(); track product.id) {
+    <div class="col">
+      <div class="card h-100 bg-dark border-secondary-subtle product-card shadow-sm"
+        [class.opacity-50]="product.stock === 0">
+
+        <!-- Image Container -->
+        <div class="position-relative overflow-hidden product-image-wrap bg-secondary bg-opacity-10">
+          @if (product.image) {
+          <img [src]="product.image" class="card-img-top product-img" [alt]="product.name" />
+          } @else {
+          <div class="h-100 w-100 d-flex align-items-center justify-content-center text-muted opacity-25">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+          </div>
+          }
+
+          @if (product.category) {
+          <span
+            class="position-absolute top-0 start-0 m-3 badge rounded-pill bg-dark bg-opacity-50 text-white-50 border border-white border-opacity-10 backdrop-blur extra-small px-3">
+            {{ product.category }}
+          </span>
+          }
+
+          @if (product.stock === 0) {
+          <div
+            class="position-absolute inset-0 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 backdrop-blur">
+            <span class="badge bg-danger rounded-pill fw-bold text-uppercase px-3">Rupture</span>
+          </div>
+          }
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-4 d-flex flex-column">
+          <h3 class="h6 fw-bold text-white mb-2 product-title">{{ product.name }}</h3>
+          <p class="extra-small text-muted mb-4 flex-grow-1 lh-base">{{ product.description }}</p>
+
+          <div class="d-flex justify-content-between align-items-end mb-4">
+            <div class="price-block">
+              <span class="extra-small text-muted d-block text-uppercase fw-bold tracking-wider mb-1">Prix</span>
+              <span class="text-primary fs-5 fw-black">{{ formatPrice(product.price) }}</span>
+            </div>
+            <div class="text-end">
+              <span class="extra-small fw-bold text-uppercase"
+                [ngClass]="product.stock <= 5 && product.stock > 0 ? 'text-warning' : 'text-success'">
+                {{ product.stock === 0 ? 'Indisponible' : product.stock <= 5 ? product.stock + ' Restants' : 'En stock'
+                  }} </span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2"
+            [disabled]="product.stock === 0 || addedId() === product.id" (click)="addToCart(product)">
+            @if (addedId() === product.id) {
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Ajouté !
+            } @else {
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            {{ product.stock === 0 ? 'Épuisé' : 'Ajouter au panier' }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Pagination -->
+  @if (lastPage() > 1) {
+  <nav class="mt-5">
+    <ul class="pagination justify-content-center gap-2">
+      <li class="page-item">
+        <button class="btn btn-dark border-secondary-subtle px-3 py-2 fw-bold text-white shadow-sm"
+          [disabled]="currentPage() === 1" (click)="prevPage()">
+          ← <span class="d-none d-sm-inline ms-1">Précédent</span>
+        </button>
+      </li>
+      <li class="page-item d-flex align-items-center px-3">
+        <span class="text-muted extra-small fw-bold text-uppercase tracking-wider">Page {{ currentPage() }} / {{
+          lastPage() }}</span>
+      </li>
+      <li class="page-item">
+        <button class="btn btn-dark border-secondary-subtle px-3 py-2 fw-bold text-white shadow-sm"
+          [disabled]="currentPage() === lastPage()" (click)="nextPage()">
+          <span class="d-none d-sm-inline me-1">Suivant</span> →
+        </button>
+      </li>
+    </ul>
+  </nav>
+  }
+  }
+</div>

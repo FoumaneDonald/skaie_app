@@ -1,0 +1,55 @@
+// Typography
+.fw-black {
+  font-weight: 900;
+}
+.extra-small {
+  font-size: 0.65rem;
+}
+.tracking-wider {
+  letter-spacing: 0.08em;
+}
+
+// Order Card Hover and Style
+.order-card {
+  transition: all 0.2s ease-in-out;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+
+  &:hover {
+    border-color: var(--bs-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+// Custom select size
+.form-select-sm {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+}
+
+// Badge customization
+.badge {
+  padding: 0.5em 0.85em;
+  font-size: 0.7rem;
+}
+
+// Border dashed for empty state
+.border-dashed {
+  border-style: dashed !important;
+  border-width: 2px !important;
+}
+
+// Responsive stacking
+@media (max-width: 576px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start !important;
+
+    .d-flex.align-items-center.gap-2 {
+      width: 100%;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+  }
+}

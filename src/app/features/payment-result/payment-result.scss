@@ -1,0 +1,54 @@
+@use '../../auth/auth.scss';
+
+// Layout Customization
+.auth-card {
+  max-width: 440px;
+  border-radius: 1.5rem;
+}
+
+.fw-black {
+  font-weight: 900;
+}
+
+// Result Icon Container
+.result-icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+// Success Animation
+.animate-pop {
+  animation: popIcon 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes popIcon {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Button Refinements
+.btn {
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btn-outline-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+// Stripe spinner override
+.spinner-border {
+  border-width: 0.2em;
+}

@@ -1,0 +1,52 @@
+// Layout and Typography
+.fw-black {
+  font-weight: 900;
+}
+.extra-small {
+  font-size: 0.65rem;
+}
+.tracking-wider {
+  letter-spacing: 0.08em;
+}
+
+// Table Customization
+.table {
+  // Make the header light to separate it from the body
+  thead.table-light {
+    --bs-table-bg: rgba(255, 255, 255, 0.02);
+    --bs-table-color: var(--bs-secondary-color);
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.01) !important;
+    }
+  }
+}
+
+// Badge Overrides
+.badge {
+  padding: 0.5em 0.85em;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+// Border subtle color for consistent dark mode look
+.border-secondary-subtle {
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+// Ensure address text doesn't look too cramped
+.address-text {
+  line-height: 1.5;
+}
+
+// Responsive table fix for tiny screens
+@media (max-width: 576px) {
+  .card-body,
+  .card-footer {
+    padding: 1.25rem !important;
+  }
+}

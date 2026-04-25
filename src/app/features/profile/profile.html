@@ -1,0 +1,128 @@
+<div class="container-fluid p-0 pb-5">
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 class="h3 fw-bold text-white mb-1">{{ 'profile.title' | translate }}</h1>
+    <p class="text-muted small">{{ 'profile.subtitle' | translate }}</p>
+  </div>
+
+  @if (successMsg()) {
+  <div
+    class="alert alert-success border-0 bg-success bg-opacity-10 text-success small mb-4 py-2 d-flex align-items-center gap-2">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+    {{ successMsg() }}
+  </div>
+  }
+  @if (errorMsg()) {
+  <div
+    class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger small mb-4 py-2 d-flex align-items-center gap-2">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+    {{ errorMsg() }}
+  </div>
+  }
+
+  <div class="row g-4">
+    <!-- Personal Information Column -->
+    <div class="col-12 col-xl-7">
+      <div class="card bg-dark border-secondary-subtle shadow-sm">
+        <div class="card-body p-4 p-md-5">
+
+          <!-- Avatar & User Header -->
+          <div class="d-flex align-items-center gap-4 mb-5 pb-4 border-bottom border-secondary-subtle">
+            <div
+              class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-black fs-2 border border-primary border-opacity-25 shadow-sm"
+              style="width: 72px; height: 72px;">
+              {{ user()?.name?.charAt(0)?.toUpperCase() }}
+            </div>
+            <div>
+              <h2 class="h5 fw-bold text-white mb-1">{{ user()?.name }}</h2>
+              <p class="text-muted small mb-2">{{ user()?.email }}</p>
+              <span class="badge rounded-pill fw-bold extra-small text-uppercase tracking-wider" [ngClass]="{
+                                'bg-primary-subtle text-primary': user()?.role === 'super_admin',
+                                'bg-warning-subtle text-warning': user()?.role === 'admin',
+                                'bg-success-subtle text-success': user()?.role === 'customer'
+                            }">{{ user()?.role }}</span>
+            </div>
+          </div>
+
+          <form [formGroup]="form" (ngSubmit)="save()" novalidate class="row g-4">
+            <div class="col-md-12">
+              <label class="form-label text-muted small text-uppercase fw-bold tracking-wider">Nom complet</label>
+              <input formControlName="name" class="form-control" placeholder="Votre nom" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-bold tracking-wider">Téléphone</label>
+              <input formControlName="phone" class="form-control" placeholder="+237 6XX XX XX XX" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-bold tracking-wider">Date de naissance</label>
+              <input formControlName="date_of_birth" type="date" class="form-control" />
+            </div>
+
+            <div class="col-12 mt-5 text-end">
+              <button type="submit" class="btn btn-primary px-5 py-2 fw-bold" [disabled]="saving()">
+                @if (saving()) {
+                <span class="spinner-border spinner-border-sm me-2"></span> Sauvegarde...
+                } @else { Enregistrer les modifications }
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security / Password Column -->
+    <div class="col-12 col-xl-5">
+      <div class="card bg-dark border-secondary-subtle shadow-sm h-100">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="bg-secondary bg-opacity-10 text-secondary rounded p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <h3 class="h6 fw-bold text-white mb-0">Changer le mot de passe</h3>
+          </div>
+
+          <p class="text-muted extra-small mb-4 lh-base">Assurez-vous d'utiliser un mot de passe fort contenant des
+            lettres, des chiffres et des caractères spéciaux.</p>
+
+          <form [formGroup]="pwForm" (ngSubmit)="savePw()" novalidate class="d-flex flex-column gap-3">
+            <div>
+              <label class="form-label text-muted small text-uppercase fw-bold tracking-wider">Mot de passe
+                actuel</label>
+              <input formControlName="current_password" type="password" class="form-control" placeholder="••••••••" />
+            </div>
+
+            <div>
+              <label class="form-label text-muted small text-uppercase fw-bold tracking-wider">Nouveau mot de
+                passe</label>
+              <input formControlName="password" type="password" class="form-control" placeholder="8 caractères min." />
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label text-muted small text-uppercase fw-bold tracking-wider">Confirmer le mot de
+                passe</label>
+              <input formControlName="password_confirmation" type="password" class="form-control"
+                placeholder="••••••••" />
+            </div>
+
+            <button type="submit" class="btn btn-outline-primary fw-bold py-2 mt-2" [disabled]="savingPw()">
+              @if (savingPw()) {
+              <span class="spinner-border spinner-border-sm me-2"></span> Modification...
+              } @else { Mettre à jour le mot de passe }
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

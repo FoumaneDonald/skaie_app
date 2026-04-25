@@ -1,0 +1,169 @@
+<div class="d-flex vh-100 overflow-hidden shell" [class.sidebar-open]="sidebarOpen()">
+
+  <!-- Mobile Overlay -->
+  <div class="overlay position-fixed inset-0 z-1050 bg-black bg-opacity-50 d-lg-none" (click)="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar d-flex flex-column flex-shrink-0 bg-dark border-end border-secondary-subtle z-1060">
+
+    <!-- Brand -->
+    <div class="sidebar-brand d-flex align-items-center gap-2 p-4 border-bottom border-secondary-subtle">
+      <div
+        class="brand-mark bg-primary rounded-3 d-flex align-items-center justify-content-center fw-black text-white shadow-sm">
+        SK
+      </div>
+      <span class="brand-name fs-5 fw-bold text-white tracking-tight">Skaie</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav flex-grow-1 overflow-auto p-3 custom-scrollbar">
+
+      @if (isCustomer()) {
+      <div class="nav-section small text-muted text-uppercase fw-bold tracking-wider px-3 mb-2 mt-2">{{'sidebar.shop' |
+        translate}}</div>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1" routerLink="/shop"
+        routerLinkActive="active" (click)="closeSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <path d="M16 10a4 4 0 0 1-8 0" />
+        </svg>
+        {{'sidebar.products' | translate}}
+      </a>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1 justify-content-between"
+        routerLink="/cart" routerLinkActive="active" (click)="closeSidebar()">
+        <div class="d-flex align-items-center gap-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          {{'sidebar.cart' | translate}}
+        </div>
+        @if (cart.count() > 0) {
+        <span class="badge rounded-pill bg-primary extra-small">{{ cart.count() }}</span>
+        }
+      </a>
+
+      <div class="nav-section small text-muted text-uppercase fw-bold tracking-wider px-3 mb-2 mt-4">{{'sidebar.orders'
+        | translate}}</div>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1" routerLink="/orders"
+        routerLinkActive="active" (click)="closeSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        {{'sidebar.my_orders' | translate}}
+      </a>
+
+      <div class="nav-section small text-muted text-uppercase fw-bold tracking-wider px-3 mb-2 mt-4">
+        {{'sidebar.my_account' | translate}}</div>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1" routerLink="/profile"
+        routerLinkActive="active" (click)="closeSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        {{'sidebar.profile' | translate}}
+      </a>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1" routerLink="/addresses"
+        routerLinkActive="active" (click)="closeSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+        {{'sidebar.addresses' | translate}}
+      </a>
+      }
+
+      @if (isAdmin()) {
+      <div class="nav-section small text-warning text-uppercase fw-bold tracking-wider px-3 mb-2 mt-4">Administration
+      </div>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1" routerLink="/admin/dashboard"
+        routerLinkActive="active" (click)="closeSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Vue d'ensemble
+      </a>
+      <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 mb-1" routerLink="/admin/products"
+        routerLinkActive="active" (click)="closeSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        </svg>
+        Produits
+      </a>
+      }
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer p-3 border-top border-secondary-subtle bg-dark bg-opacity-50">
+      <div class="mb-3 px-2">
+        <app-language-switcher />
+      </div>
+      @if (user | async; as u) {
+      <div class="d-flex align-items-center gap-3 p-2 rounded-3 bg-secondary bg-opacity-10 mb-3">
+        <div
+          class="bg-primary bg-opacity-25 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold small flex-shrink-0"
+          style="width: 36px; height: 36px;">
+          {{ u.name.charAt(0).toUpperCase() }}
+        </div>
+        <div class="overflow-hidden">
+          <div class="text-white small fw-bold text-truncate">{{ u.name }}</div>
+          <div class="text-muted extra-small text-capitalize">{{ u.role }}</div>
+        </div>
+      </div>
+      }
+      <button
+        class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2 border-0"
+        (click)="logout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        {{ 'auth.logout' | translate }}
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main d-flex flex-column flex-grow-1 overflow-hidden">
+
+    <!-- Mobile Topbar -->
+    <header
+      class="topbar d-lg-none d-flex align-items-center justify-content-between px-4 border-bottom border-secondary-subtle bg-dark">
+      <button class="btn btn-link text-white p-0" (click)="toggleSidebar()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <span class="fw-bold text-white small">Skaie</span>
+      <div class="d-flex align-items-center gap-3">
+        @if (isCustomer()) {
+        <a routerLink="/cart" class="text-white position-relative">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          @if (cart.count() > 0) {
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary extra-small">{{
+            cart.count() }}</span>
+          }
+        </a>
+        }
+      </div>
+    </header>
+
+    <main class="content flex-grow-1 overflow-auto p-4 p-md-5 bg-body">
+      <router-outlet />
+    </main>
+  </div>
+</div>

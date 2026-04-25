@@ -4,10 +4,15 @@
   "nav": {
     "dashboard": "Tableau de bord",
     "profile": "Profil",
-    "addresses": "Adresses"
+    "addresses": "Adresses",
+    "shop": "Boutique",
+    "cart": "Panier",
+    "orders": "Mes commandes"
   },
 
   "auth": {
+    "logout": "Se déconnecter",
+    "logging_out": "Déconnexion...",
     "login": {
       "title": "Bon retour",
       "subtitle": "Connectez-vous à votre compte",
@@ -35,22 +40,34 @@
       "confirm_placeholder": "Répétez le mot de passe",
       "submit": "Créer un compte",
       "submitting": "Création du compte...",
-      "has_account": "Vous avez déjà un compte ?",
-      "login_link": "Se connecter"
+      "already_account": "Vous avez déjà un compte ?",
+      "login_link": "Se connecter",
+      "errors": {
+        "mismatch": "Les mots de passe ne correspondent pas."
+      }
     },
     "verify": {
       "title": "Vérifiez votre boîte mail",
       "subtitle": "Nous avons envoyé un code à 6 chiffres à",
-      "verify_btn": "Vérifier l'email",
-      "verifying": "Vérification...",
-      "didnt_receive": "Vous ne l'avez pas reçu ?",
-      "resend": "Renvoyer le code",
-      "resending": "Envoi...",
-      "resend_in": "Renvoyer dans {{seconds}}s",
+      "submit": "Vérifier l'email",
+      "submitting": "Vérification...",
+      "no_code": "Vous ne l'avez pas reçu ?",
+      "resend_link": "Renvoyer le code",
+      "sending": "Envoi...",
+      "resend_cooldown": "Renvoyer dans {{seconds}}s",
       "resent_success": "Un nouveau code a été envoyé à votre adresse email."
-    },
-    "logout": "Se déconnecter",
-    "logging_out": "Déconnexion..."
+    }
+  },
+
+  "sidebar": {
+    "shop": "Boutique",
+    "products": "Produits",
+    "cart": "Panier",
+    "orders": "Commandes",
+    "my_orders": "Mes commandes",
+    "my_account": "Mon compte",
+    "profile": "Profil",
+    "addresses": "Addresses"
   },
 
   "dashboard": {
@@ -63,9 +80,21 @@
     "verified": "✓ Vérifié",
     "unverified": "✗ Non vérifié",
     "not_set": "Non renseigné",
+    "orders": "Commandes",
+    "pending": "En attente",
+    "total_spent": "Total dépensé",
+    "store": "Boutique",
+    "commands": "Commandes",
+    "my_profile": "Mon profil",
     "quick_actions": "Actions rapides",
     "edit_profile": "Modifier le profil",
-    "manage_addresses": "Gérer les adresses"
+    "manage_addresses": "Adresses",
+    "manage_orders": "Gérer les commandes",
+    "stats": {
+      "orders": "Commandes",
+      "pending": "En attente",
+      "total_spent": "Total dépensé"
+    }
   },
 
   "profile": {
@@ -74,11 +103,8 @@
     "personal_info": "Informations personnelles",
     "personal_info_sub": "Mettez à jour votre nom, email et coordonnées",
     "name": "Nom complet",
-    "name_placeholder": "Jean Dupont",
     "email": "Adresse email",
-    "email_placeholder": "vous@exemple.com",
     "phone": "Numéro de téléphone",
-    "phone_placeholder": "+237 6 00 00 00 00",
     "dob": "Date de naissance",
     "save": "Enregistrer les modifications",
     "saving": "Enregistrement...",
@@ -87,12 +113,9 @@
     "change_password_sub": "Sécurisez votre compte avec un mot de passe fort",
     "current_password": "Mot de passe actuel",
     "new_password": "Nouveau mot de passe",
-    "new_password_placeholder": "Min. 8 caractères",
     "confirm_password": "Confirmer le nouveau mot de passe",
-    "confirm_placeholder": "Répétez le nouveau mot de passe",
     "update_password": "Mettre à jour le mot de passe",
-    "updating": "Mise à jour...",
-    "password_success": "Mot de passe modifié avec succès."
+    "updating": "Mise à jour..."
   },
 
   "addresses": {
@@ -130,6 +153,154 @@
     "deleting": "Suppression...",
     "empty": "Aucune adresse enregistrée",
     "add_first": "Ajouter votre première adresse"
+  },
+
+  "shop": {
+    "title": "Boutique",
+    "available": "{{count}} produit(s) disponible(s)",
+    "search_placeholder": "Rechercher un produit...",
+    "category_placeholder": "Catégorie...",
+    "sort_newest": "Plus récents",
+    "sort_price_asc": "Prix croissant",
+    "sort_price_desc": "Prix décroissant",
+    "filter": "Filtrer",
+    "reset": "Réinitialiser",
+    "loading": "Chargement...",
+    "no_products": "Aucun produit trouvé",
+    "no_products_hint": "Essayez d'autres filtres.",
+    "show_all": "Tout afficher",
+    "out_of_stock": "Rupture",
+    "low_stock": "{{count}} restants",
+    "in_stock": "En stock",
+    "add_to_cart": "Ajouter au panier",
+    "added": "Ajouté !",
+    "unavailable": "Indisponible",
+    "prev": "← Précédent",
+    "next": "Suivant →",
+    "page_info": "Page {{current}} / {{last}}",
+    "cart_btn": "Panier"
+  },
+
+  "cart": {
+    "title": "Mon Panier",
+    "items_count": "{{count}} article(s)",
+    "continue_shopping": "← Continuer les achats",
+    "empty": "Votre panier est vide",
+    "empty_hint": "Ajoutez des produits depuis la boutique",
+    "view_products": "Voir les produits",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "shipping_hint": "Calculée à l'étape suivante",
+    "estimated_total": "Total estimé",
+    "checkout": "Commander →",
+    "summary": "Récapitulatif"
+  },
+
+  "orders": {
+    "title_customer": "Mes commandes",
+    "title_admin": "Toutes les commandes",
+    "found": "{{count}} commande(s) trouvée(s)",
+    "filter_all": "Tous les statuts",
+    "filter_pending": "En attente",
+    "filter_processing": "En traitement",
+    "filter_shipped": "Expédiées",
+    "filter_delivered": "Livrées",
+    "filter_cancelled": "Annulées",
+    "loading": "Chargement des commandes...",
+    "empty": "Aucune commande",
+    "empty_hint": "Vous n'avez pas encore passé de commande.",
+    "discover_shop": "Découvrir la boutique",
+    "order_number": "Commande #{{id}}",
+    "status_pending": "En attente",
+    "status_processing": "En traitement",
+    "status_shipped": "Expédiée",
+    "status_delivered": "Livrée",
+    "status_cancelled": "Annulée",
+    "paid": "✓ Payé",
+    "not_paid": "Non payé",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "total": "Total",
+    "pay": "Payer",
+    "cancel": "Annuler",
+    "details": "Détails →",
+    "detail_title": "Commande #{{id}}",
+    "detail_subtitle": "Détail de votre commande",
+    "back": "← Mes commandes",
+    "items": "Articles commandés",
+    "product": "Produit",
+    "qty": "Qté",
+    "unit_price": "Prix unit.",
+    "item_subtotal": "Sous-total",
+    "status_label": "Statut",
+    "order_status": "Commande",
+    "payment_status": "Paiement",
+    "date": "Date",
+    "pay_now": "💳 Payer maintenant",
+    "shipping_address": "Adresse de livraison",
+    "notes": "Notes"
+  },
+
+  "checkout": {
+    "address_title": "Adresse de livraison",
+    "step": "Étape {{current}} sur {{total}}",
+    "back_to_cart": "← Retour au panier",
+    "saved_addresses": "Mes adresses enregistrées",
+    "use_new": "+ Utiliser une nouvelle adresse",
+    "new_address_title": "Nouvelle adresse",
+    "label": "Étiquette",
+    "label_placeholder": "Domicile, Bureau...",
+    "phone": "Téléphone",
+    "phone_placeholder": "+237 6XX XX XX XX",
+    "street": "Rue *",
+    "street_placeholder": "123 rue des Fleurs",
+    "city": "Ville *",
+    "city_placeholder": "Yaoundé",
+    "state": "Région / État",
+    "state_placeholder": "Centre",
+    "zip": "Code postal",
+    "zip_placeholder": "00000",
+    "country": "Pays",
+    "country_placeholder": "CM",
+    "default_badge": "Défaut",
+    "order_summary": "Résumé de commande",
+    "articles": "{{count}} article(s)",
+    "total": "Total",
+    "proceed": "Passer au paiement →",
+    "processing": "Création...",
+    "payment_title": "Paiement sécurisé",
+    "payment_step": "Paiement",
+    "address_done": "Adresse",
+    "card_label": "Informations de carte",
+    "sandbox_hint": "🧪 Mode sandbox — Utilisez 4242 4242 4242 4242 · Exp: toute date future · CVC: 123",
+    "pay_btn": "Payer {{amount}}",
+    "paying": "Traitement en cours...",
+    "secure_note": "Paiement sécurisé via Stripe SSL/TLS",
+    "initializing": "Initialisation du paiement...",
+    "view_orders": "Voir mes commandes"
+  },
+
+  "payment": {
+    "success_title": "Paiement réussi !",
+    "success_sub": "Votre commande #{{id}} a été confirmée et est en cours de traitement.",
+    "failed_title": "Paiement refusé",
+    "failed_sub": "Votre paiement n'a pas pu être traité. Veuillez réessayer.",
+    "pending_title": "Paiement en attente",
+    "pending_sub": "Votre paiement est en cours de vérification. Nous vous notifierons dès que le statut sera mis à jour.",
+    "verifying_title": "Vérification...",
+    "verifying_sub": "Vérification du statut du paiement en cours.",
+    "view_order": "Voir la commande",
+    "continue": "Continuer les achats",
+    "retry": "Réessayer le paiement",
+    "my_orders": "Mes commandes",
+    "payment_history": "Historique des paiements",
+    "confirmed_title": "Paiement confirmé !",
+    "confirmed_sub": "Votre commande n°{{id}} a été passée avec succès.",
+    "amount_paid": "Montant payé",
+    "order_status": "Statut commande",
+    "paid_at": "Payé le",
+    "view_orders": "Voir mes commandes",
+    "continue_shopping": "Continuer les achats"
   },
 
   "validation": {

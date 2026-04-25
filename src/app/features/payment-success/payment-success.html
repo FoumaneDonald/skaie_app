@@ -1,0 +1,66 @@
+<div class="auth-wrapper min-vh-100 d-flex flex-column align-items-center justify-content-center p-3">
+
+  <div class="card bg-dark border-secondary-subtle shadow-lg auth-card text-center">
+    <div class="card-body p-4 p-md-5 d-flex flex-column align-items-center">
+
+      <!-- Success Icon -->
+      <div
+        class="result-icon bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mb-4 animate-pop shadow-sm"
+        style="border: 2px solid rgba(34, 197, 94, 0.2);">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+
+      <!-- Title & Subtitle -->
+      <h1 class="h3 fw-black text-white mb-2">Paiement confirmé !</h1>
+      <p class="text-muted small mb-4 px-md-4">
+        Votre commande <strong class="text-white">#{{ orderId() }}</strong> a été passée avec succès et est maintenant
+        en préparation.
+      </p>
+
+      <!-- Receipt Details Box -->
+      @if (status()) {
+      <div class="w-100 bg-secondary bg-opacity-10 rounded-4 p-3 mb-4 border border-secondary-subtle text-start">
+        <div
+          class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-white border-opacity-10">
+          <span class="extra-small text-muted text-uppercase fw-bold tracking-wider">Montant payé</span>
+          <span class="text-white fw-black">{{ formatPrice(status()!.amount, status()!.currency.toUpperCase()) }}</span>
+        </div>
+
+        <div
+          class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-white border-opacity-10">
+          <span class="extra-small text-muted text-uppercase fw-bold tracking-wider">Statut</span>
+          <span class="badge rounded-pill bg-success-subtle text-success fw-bold extra-small text-uppercase">
+            {{ status()!.order_status }}
+          </span>
+        </div>
+
+        @if (status()!.paid_at) {
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="extra-small text-muted text-uppercase fw-bold tracking-wider">Date</span>
+          <span class="text-secondary extra-small fw-medium">{{ status()!.paid_at | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Actions -->
+      <div class="d-grid gap-2 w-100 mt-2">
+        <a routerLink="/orders" class="btn btn-primary fw-bold py-2 shadow-sm">
+          Voir mes commandes
+        </a>
+        <a routerLink="/shop" class="btn btn-outline-secondary border-secondary-subtle text-white-50 py-2">
+          Continuer les achats
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Small footer note -->
+  <div class="mt-4 text-center">
+    <p class="extra-small text-muted opacity-50 mb-0">Un email de confirmation vous a été envoyé.</p>
+  </div>
+</div>

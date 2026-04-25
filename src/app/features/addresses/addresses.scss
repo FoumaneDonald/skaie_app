@@ -1,0 +1,36 @@
+.form-card { margin-bottom: 24px; }
+.form-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
+.addr-form { display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.addr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.addr-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color var(--transition);
+
+  &--default { border-color: rgba(108,99,255,.3); }
+}
+
+.addr-head { display: flex; align-items: center; gap: 8px; }
+.addr-label { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+
+.addr-body {
+  flex: 1;
+  p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+}
+
+.addr-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.spinner { width: 13px; height: 13px; border-color: rgba(255,255,255,.3); border-top-color: #fff; }

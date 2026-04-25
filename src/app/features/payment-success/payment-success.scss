@@ -1,0 +1,65 @@
+@use '../../auth/auth.scss';
+
+// Layout & Animation
+.auth-card {
+  max-width: 420px;
+  border-radius: 1.5rem;
+  animation: successCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes successCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fw-black {
+  font-weight: 900;
+}
+.extra-small {
+  font-size: 0.65rem;
+}
+.tracking-wider {
+  letter-spacing: 0.1em;
+}
+
+// Success Icon Styling
+.result-icon {
+  width: 84px;
+  height: 84px;
+}
+
+.animate-pop {
+  animation: popSuccess 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes popSuccess {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Button refinements
+.btn {
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Receipt row logic
+.border-bottom {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
